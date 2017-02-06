@@ -1,13 +1,13 @@
-import gui.MainPanel;
+import gui.AgendaForm;
 
 /**
  * Created by Stijn on 6-2-2017.
  */
 public class Main {
 
-    static MainPanel mp;
+    static AgendaForm mp;
 
     public static void main(String[] args){
-        mp = new MainPanel();
+        mp = new AgendaForm();
     }
 }
