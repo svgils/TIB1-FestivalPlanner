@@ -1,30 +1,25 @@
 package assets;
 
+import java.time.LocalTime;
+
 /**
- * Created by Bob, Bram en Michael on 6-2-2017.
+ * Created by Bob, Bram en Michaelleelal on 6-2-2017.
  */
 
 public class Performance {
     private Artist artist;
     private Stage stage;
-    private double begin;
-    private double length;
+    private LocalTime begin;
+    private LocalTime end;
 
-    public Performance() {
-        artist = new Artist();
-        stage = new Stage();
-        begin = 2.0;
-        length = 3.0;
-    }
-
-    public Performance(Artist artist, Stage stage, int begin, int length) {
+    public Performance(Artist artist, Stage stage, LocalTime begin, LocalTime end) {
         this.artist = artist;
         this.stage = stage;
         this.begin = begin;
-        this.length = length;
+        this.end = end;
     }
 
-    public double getBegin(){
+    public LocalTime getBegin(){
         return begin;
     }
 
@@ -36,13 +31,9 @@ public class Performance {
         return stage;
     }
 
-    public double getLength(){
-        return length;
-    }
-
-    public double getEnd(){
-        double end;
-        end = begin + length;
+    public LocalTime getEnd(){
+        /*double end;
+        end = begin + end;
             if(end >= 24){
                 end -= 24;
                 return end;
@@ -50,5 +41,7 @@ public class Performance {
             else{
                 return end;
             }
+            */
+        return null;
     }
 }
