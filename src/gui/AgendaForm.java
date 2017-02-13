@@ -1,25 +1,55 @@
 package gui;
 
+import assets.Stage;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Created by Stijn on 6-2-2017.
- */
-public class AgendaForm extends JFrame{
+
+public class AgendaForm extends JFrame {
     private JPanel mainPanel;
+    private JScrollBar scrollBar1;
+    private JScrollBar scrollBar2;
+    private SchedulePainter schedulePainter;
+    private JMenuBar menuBar;
+    private JMenu menuFile;
 
-    public AgendaForm(){
+    final static int H_SPACING = 70;
+    final static int V_SPACING = 50;
+
+    int scrollBar1Pos;
+    int scrollBar2Pos;
+
+    static Set<Stage> stages = new HashSet<>();
+
+    public AgendaForm() {
         super("Agenda");
-
-        setPreferredSize(new Dimension( 1000, 350));
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        setContentPane(mainPanel);
+        stages.add(new Stage("vgdyasdanj"));
+        stages.add(new Stage("vgdrrehnj"));
+        stages.add(new Stage("vgwehnj"));
+        stages.add(new Stage("vgdyasdnj"));
+        stages.add(new Stage("vgdybhnasd"));
 
+        mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size()));
+
+        setResizable(false);
+
+        //Scrollbar stuff
+        scrollBar2.addAdjustmentListener(e -> scrollBar2Pos = e.getValue());
+        scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
+
+        menuBar = new JMenuBar();
+        menuFile = new JMenu("File");
+        menuBar.add(menuFile);
+
+        setJMenuBar(menuBar);
+        setContentPane(mainPanel);
         setVisible(true);
         pack();
     }

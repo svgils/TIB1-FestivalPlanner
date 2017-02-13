@@ -1,5 +1,7 @@
 package gui;
 
+import assets.Stage;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +12,6 @@ public class SchedulePainter extends JPanel {
 
     public SchedulePainter(){
         super();
-
         setBackground(Color.WHITE);
     }
 
@@ -28,16 +29,18 @@ public class SchedulePainter extends JPanel {
         //System.out.println(height / 5);
 
         int hSpacing = (int)Math.floor(width / 6);
-        int vSpacing = (int)Math.floor(height / 5);
+//        if(AgendaForm.stages.size() > 0){
+//            vSpacing = (int)Math.floor(height / AgendaForm.stages.size());}
+//        else vSpacing = (int)Math.floor(height);
 
         for(int i = 1; i < 5; i++){
-            g2d.setStroke(new BasicStroke(3));
-            g2d.drawLine(posX, posY + (vSpacing * i), posX + width, posY + (vSpacing * i));
+            g2d.setStroke(new BasicStroke(1));
+            g2d.drawLine(posX, posY + (AgendaForm.V_SPACING * i), posX + width, posY + (AgendaForm.V_SPACING * i));
         }
 
         for(int i = 1; i < 24; i++){
-            g2d.setStroke(new BasicStroke(3));
-            g2d.drawLine(posX + (hSpacing * i), posY, posX + (hSpacing * i), posY + height);
+            g2d.setStroke(new BasicStroke(1));
+            g2d.drawLine(posX + (AgendaForm.H_SPACING * i), posY, posX + (AgendaForm.H_SPACING * i), posY + height);
         }
     }
 }
