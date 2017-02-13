@@ -3,13 +3,7 @@ package assets;
 /**
  * Created by Bob, Bram en Michael on 6-2-2017.
  */
-<<<<<<< HEAD
 
-public class Schedule extends Festival {
-    private ArrayList<Artist> artist;
-    private java.util.ArrayList<Visitor> visitor;
-    private java.util.ArrayList<Stage> stage;
-=======
 public class Schedule {
     private Artist artist;
     private Stage stage;
@@ -49,13 +43,12 @@ public class Schedule {
     public double getEnd(){
         double end;
         end = begin + length;
-        if(end <= 24){
-            end -= 24;
-            return end;
-        }
-        else{
-            return end;
-        }
+            if(end >= 24){
+                end -= 24;
+                return end;
+            }
+            else{
+                return end;
+            }
     }
->>>>>>> 53382ad0d38a457fffa288e5ac03100ea0473b5a
 }
