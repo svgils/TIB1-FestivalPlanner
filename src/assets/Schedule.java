@@ -12,13 +12,15 @@ public class Schedule {
         performances = new ArrayList<>();
     }
 
-    public void addPerformance(Performance performance)
-    {
+    public void addPerformance(Performance performance) {
         performances.add(performance);
     }
 
-    public Performance getPerformance(int index)
-    {
+    public Performance getPerformance(int index) {
         return performances.get(index);
+    }
+
+    public int performanceCount() {
+        return performances.size();
     }
 }
