@@ -31,14 +31,14 @@ public class AgendaForm extends JFrame {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        stages.add(new Stage("Stage1"));
+        stages.add(new Stage("Stage1", ""));
 
-        stages.add(new Stage("Stage2"));
-        stages.add(new Stage("Stage3"));
+        stages.add(new Stage("Stage2", ""));
+        stages.add(new Stage("Stage3", ""));
 
-        stages.add(new Stage("Stage4"));
-        stages.add(new Stage("Stage4"));
-        stages.add(new Stage("Stage123"));
+        stages.add(new Stage("Stage4", ""));
+        stages.add(new Stage("Stage4", ""));
+        stages.add(new Stage("Stage123", ""));
 
         mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size() + V_SPACING));
 
