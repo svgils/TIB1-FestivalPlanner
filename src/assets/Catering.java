@@ -1,6 +1,6 @@
 package assets;
 
-public class Catering extends Facaliteiten {
+public class Catering extends Facility {
     private String Locatie;
     private int Prijs;
     private int HoeveelheidEten;

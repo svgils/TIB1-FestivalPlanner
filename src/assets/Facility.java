@@ -3,8 +3,8 @@ package assets;
 /**
  * Created by Bobsk on 6-2-2017.
  */
-public class Employee  {
+public class Facility {
     private String name;
-    private String workSort;
-    private int wages;
+    private String location;
+    private int price;
 }
