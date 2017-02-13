@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Bobsk on 6-2-2017.
  */
-public class Camping extends Festival {
+public class Camping{
     private int Aantal;
     private java.util.ArrayList Bezoekers;
     private String Plaats;
