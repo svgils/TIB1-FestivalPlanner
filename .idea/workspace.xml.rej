@@ -1,0 +1,12 @@
+diff a/.idea/workspace.xml b/.idea/workspace.xml	(rejected hunks)
+@@ -391,7 +391,10 @@
+       <setting name="passParentEnv" value="true" />
+       <setting name="launchBrowser" value="true" />
+       <setting name="launchBrowserUrl" value="" />
++<<<<<<< HEAD
+       <setting name="depsClasspath" value="false" />
++=======
++>>>>>>> a6445093fba96bf1c8f28dbea60329b716e3547d
+       <method />
+     </configuration>
+     <configuration default="true" type="JUnit" factoryName="JUnit">
