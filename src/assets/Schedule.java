@@ -22,4 +22,3 @@ public class Schedule {
         return performances.get(index);
     }
 }
-i
