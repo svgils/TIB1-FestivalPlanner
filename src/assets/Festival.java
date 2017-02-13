@@ -13,7 +13,6 @@ public class Festival {
     private String day;
     private java.util.ArrayList<Artist> artist;
     private java.util.ArrayList<Visitor> visitor;
-<<<<<<< HEAD
     private java.util.ArrayList<Stage> stage;
 
     public Festival(int visitorAmount, int price, String day, int start, int end, String name) {
@@ -63,11 +62,4 @@ public class Festival {
     public void Print(){
         System.out.println(toString());
     }
-=======
-
-
-
-
-
->>>>>>> 53382ad0d38a457fffa288e5ac03100ea0473b5a
 }

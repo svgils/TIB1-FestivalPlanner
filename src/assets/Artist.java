@@ -15,11 +15,11 @@ public class Artist{
         members = 2;
     }
 
-public Artist(String name, String genre, int members){
-    this.name = name;
-    this.genre = genre;
-    this.members = members;
-}
+    public Artist(String name, String genre, int members){
+        this.name = name;
+        this.genre = genre;
+        this.members = members;
+    }
 
     public String getName(){
         return name;
