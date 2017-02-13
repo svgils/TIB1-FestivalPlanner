@@ -42,6 +42,6 @@ public class Performance {
                 return end;
             }
             */
-        return null;
+        return end;
     }
 }

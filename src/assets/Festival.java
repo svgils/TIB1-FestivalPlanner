@@ -16,6 +16,9 @@ public class Festival {
     private ArrayList<Artist> artists;
     private ArrayList<Visitor> visitors;
     private ArrayList<Stage> stages;
+    private ArrayList<Performance> performances;
+
+    private Schedule schedule;
 
     public Festival(int visitorAmount, int price, String day, int start, int end, String name) {
         this.visitorAmount = visitorAmount;
@@ -28,40 +31,49 @@ public class Festival {
         artists = new ArrayList<>();
         visitors = new ArrayList<>();
         stages = new ArrayList<>();
+        performances = new ArrayList<>();
 
-
+        schedule = new Schedule();
     }
 
-    public void changeVisitorAmount(int visitorAmount){
+    public void changeVisitorAmount(int visitorAmount) {
         this.visitorAmount = visitorAmount;
     }
 
-    public void changePrice(int price){
+    public void changePrice(int price) {
         this.price = price;
     }
 
-    public void changeEnd(int end){
+    public void changeEnd(int end) {
         this.end = end;
     }
 
-    public void changeStart(int start){
+    public void changeStart(int start) {
         this.start = start;
     }
 
-    public void changeName(String name){
+    public void changeName(String name) {
         this.name = name;
     }
 
-    public void changeDay(String day){
+    public void changeDay(String day) {
         this.day = day;
     }
 
-    public void addArtist(Artist artist){
-        artists.add (artist);
+    public void addPerformance(Performance performance) {
+        performances.add(performance);
     }
 
-    public void addStage(Stage stage){
-        stages.add (stage);
+    public void addArtist(Artist artist) {
+        artists.add(artist);
+    }
+
+    public void addStage(Stage stage) {
+        stages.add(stage);
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
     }
 
     public String toString(){
