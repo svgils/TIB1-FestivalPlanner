@@ -1,5 +1,7 @@
 package assets;
 
+import java.util.*;
+
 /**
  * Created by Bob, Bram en Michel on 6-2-2017.
  */
@@ -11,9 +13,9 @@ public class Festival {
     private int start;  // In Uur
     private String name;
     private String day;
-    private java.util.ArrayList<Artist> artist;
-    private java.util.ArrayList<Visitor> visitor;
-    private java.util.ArrayList<Stage> stage;
+    private ArrayList<Artist> artists;
+    private ArrayList<Visitor> visitors;
+    private ArrayList<Stage> stages;
 
     public Festival(int visitorAmount, int price, String day, int start, int end, String name) {
         this.visitorAmount = visitorAmount;
@@ -22,6 +24,12 @@ public class Festival {
         this.start = start;
         this.end = end;
         this.name = name;
+
+        artists = new ArrayList<>();
+        visitors = new ArrayList<>();
+        stages = new ArrayList<>();
+
+
     }
 
     public void changeVisitorAmount(int visitorAmount){
@@ -46,6 +54,14 @@ public class Festival {
 
     public void changeDay(String day){
         this.day = day;
+    }
+
+    public void addArtist(Artist artist){
+        artists.add (artist);
+    }
+
+    public void addStage(Stage stage{
+        stages.add (stage);
     }
 
     public String toString(){
