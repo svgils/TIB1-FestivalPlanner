@@ -60,7 +60,7 @@ public class Festival {
         artists.add (artist);
     }
 
-    public void addStage(Stage stage{
+    public void addStage(Stage stage){
         stages.add (stage);
     }
 
