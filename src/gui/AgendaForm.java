@@ -38,6 +38,11 @@ public class AgendaForm extends JFrame {
 
         stages.add(new Stage("Stage4"));
         stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
         stages.add(new Stage("Stage123"));
 
         mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size() + V_SPACING));
