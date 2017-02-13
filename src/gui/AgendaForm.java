@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,19 +25,27 @@ public class AgendaForm extends JFrame {
     int scrollBar1Pos;
     int scrollBar2Pos;
 
-    static Set<Stage> stages = new HashSet<>();
+    static ArrayList<Stage> stages = new ArrayList<>();
 
     public AgendaForm() {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        stages.add(new Stage("asdsgsadfadj"));
-        stages.add(new Stage("vgdehnj"));
-        stages.add(new Stage("vghnj"));
-        stages.add(new Stage("vgsdnj"));
-        stages.add(new Stage("vgdasd"));
+        stages.add(new Stage("Stage1"));
 
-        mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size()));
+        stages.add(new Stage("Stage2"));
+        stages.add(new Stage("Stage3"));
+
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage4"));
+        stages.add(new Stage("Stage123"));
+
+        mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size() + V_SPACING));
 
         //setResizable(false);
 

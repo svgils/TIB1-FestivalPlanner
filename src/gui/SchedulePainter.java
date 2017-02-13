@@ -4,6 +4,8 @@ import assets.Stage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalTime;
+import java.util.Scanner;
 
 /**
  * Created by Stijn on 6-2-2017.
@@ -21,17 +23,20 @@ public class SchedulePainter extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(new Font("Arial", 1, 15));
 
+        LocalTime time = LocalTime.parse("00:00");
 
         int posX = 0;
         int posY = 0;
         int width = getWidth();
-        int height = getHeight();
+        int height = AgendaForm.V_SPACING * (AgendaForm.stages.size() + 1);
 
         int hSpaceingFirst = 0;
         for(Stage s : AgendaForm.stages){
-            if(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpaceingFirst)
+            if(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpaceingFirst - 30)
                 hSpaceingFirst = (int)g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
+            System.out.println(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30);
             System.out.println(hSpaceingFirst);
+            System.out.println("----------------------");
         }
 
         //System.out.println(height / 5);
@@ -60,6 +65,8 @@ public class SchedulePainter extends JPanel {
                 g2d.drawLine(posX + (AgendaForm.H_SPACING * (i - 1)), posY, posX + (AgendaForm.H_SPACING * (i - 1)), posY + height);
             }
         }
+
+        //drawing stage names
         posX = 15;
         posY = AgendaForm.V_SPACING;
 
@@ -67,5 +74,20 @@ public class SchedulePainter extends JPanel {
             g2d.drawString(s.getName(), posX, posY + 7 + AgendaForm.V_SPACING/2);
             posY += AgendaForm.V_SPACING;
         }
+
+        posX = hSpaceingFirst + 15;
+        posY = 0;
+        //drawing times
+        for(int i = 0; i < (this.getWidth() - hSpaceingFirst) / 50 + 0.5; i++){
+             g2d.drawString(time.toString(), posX, posY + 7 + AgendaForm.V_SPACING/2);
+             time = getNextTime(time);
+             posX += AgendaForm.H_SPACING;
+        }
+
+    }
+
+    public LocalTime getNextTime(LocalTime t){
+        LocalTime newTime = t.plusMinutes(30);
+        return newTime;
     }
 }
