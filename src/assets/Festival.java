@@ -28,6 +28,8 @@ public class Festival {
         artists = new ArrayList<>();
         visitors = new ArrayList<>();
         stages = new ArrayList<>();
+
+
     }
 
     public void changeVisitorAmount(int visitorAmount){
@@ -52,6 +54,14 @@ public class Festival {
 
     public void changeDay(String day){
         this.day = day;
+    }
+
+    public void addArtist(Artist artist){
+        artists.add (artist);
+    }
+
+    public void addStage(Stage stage{
+        stages.add (stage);
     }
 
     public String toString(){

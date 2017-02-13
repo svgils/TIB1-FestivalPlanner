@@ -17,8 +17,9 @@ public class Schedule {
         performances.add(performance);
     }
 
-    public Performance get(int index)
+    public Performance getPerformance(int index)
     {
         return performances.get(index);
     }
 }
+i
