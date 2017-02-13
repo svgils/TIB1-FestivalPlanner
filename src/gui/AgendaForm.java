@@ -30,15 +30,15 @@ public class AgendaForm extends JFrame {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        stages.add(new Stage("vgdyasdanj"));
-        stages.add(new Stage("vgdrrehnj"));
-        stages.add(new Stage("vgwehnj"));
-        stages.add(new Stage("vgdyasdnj"));
-        stages.add(new Stage("vgdybhnasd"));
+        stages.add(new Stage("asdsgsadfadj"));
+        stages.add(new Stage("vgdehnj"));
+        stages.add(new Stage("vghnj"));
+        stages.add(new Stage("vgsdnj"));
+        stages.add(new Stage("vgdasd"));
 
         mainPanel.setPreferredSize(new Dimension(1000, 70 + V_SPACING * stages.size()));
 
-        setResizable(false);
+        //setResizable(false);
 
         //Scrollbar stuff
         scrollBar2.addAdjustmentListener(e -> scrollBar2Pos = e.getValue());
