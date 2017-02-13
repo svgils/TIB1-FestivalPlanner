@@ -8,6 +8,11 @@ public class Stage  {
     private String name;
     private String location;
 
+    public Stage(){
+        name = "jajaja";
+        location = "locatie 666";
+    }
+
     public Stage(String name, String location){
         this.name = name;
         this.location = location;

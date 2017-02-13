@@ -9,6 +9,12 @@ public class Artist{
     private String genre;
     private int members;
 
+    public Artist(){
+        name = "bob";
+        genre = "muziek";
+        members = 2;
+    }
+
 public Artist(String name, String genre, int members){
     this.name = name;
     this.genre = genre;
