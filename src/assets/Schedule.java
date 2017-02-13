@@ -1,6 +1,5 @@
 package assets;
 
-import java.util.*;
 /**
  * Created by Bob, Bram en Michael on 6-2-2017.
  */
@@ -22,7 +21,6 @@ public class Schedule {
         stage = new Stage();
         begin = 2.0;
         length = 3.0;
-
     }
 
     public Schedule(Artist artist, Stage stage, int begin, int length) {
@@ -30,7 +28,6 @@ public class Schedule {
         this.stage = stage;
         this.begin = begin;
         this.length = length;
-
     }
 
     public double getBegin(){
@@ -59,7 +56,6 @@ public class Schedule {
         else{
             return end;
         }
-
     }
 >>>>>>> 53382ad0d38a457fffa288e5ac03100ea0473b5a
 }
