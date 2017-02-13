@@ -9,7 +9,7 @@ import java.awt.*;
 public class SchedulePainter extends JPanel {
 
     public SchedulePainter(){
-        super(new FlowLayout());
+        super();
 
         setBackground(Color.WHITE);
     }
@@ -25,14 +25,10 @@ public class SchedulePainter extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        System.out.println(height / 5);
+        //System.out.println(height / 5);
 
-        int hSpacing = (int)Math.floor(width / 24);
+        int hSpacing = (int)Math.floor(width / 6);
         int vSpacing = (int)Math.floor(height / 5);
-
-
-
-        hSpacing = getWidth() / 24;
 
         for(int i = 1; i < 5; i++){
             g2d.setStroke(new BasicStroke(3));
