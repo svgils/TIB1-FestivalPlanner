@@ -14,4 +14,9 @@ public class Festival {
     private String Name;
     private java.util.ArrayList<Artist> artist;
     private java.util.ArrayList<Visitor> visitor;
+
+
+
+
+
 }
