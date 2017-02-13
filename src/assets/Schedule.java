@@ -43,12 +43,12 @@ public class Schedule {
     public double getEnd(){
         double end;
         end = begin + length;
-        if(end <= 24){
-            end -= 24;
-            return end;
-        }
-        else{
-            return end;
-        }
+            if(end >= 24){
+                end -= 24;
+                return end;
+            }
+            else{
+                return end;
+            }
     }
 }

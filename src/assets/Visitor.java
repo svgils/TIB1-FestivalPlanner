@@ -7,10 +7,23 @@ package assets;
 public class Visitor{
     private String name;
     private String sex;
-    private int dateOfBirth;
+    private String dateOfBirth;
 
-    public Visitor(String name, String sex, int dateOfBirth)
-    {
+    public Visitor(String name, String sex, String dateOfBirth){
+        this.name = name;
+        this.sex = sex;
+        this.dateOfBirth = dateOfBirth;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 }
