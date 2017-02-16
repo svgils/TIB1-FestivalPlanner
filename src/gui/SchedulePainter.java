@@ -6,6 +6,8 @@ import assets.Stage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -86,6 +88,17 @@ public class SchedulePainter extends JPanel {
         for(VLine l : vertLines){
              g2d.drawString(getTime(l.index).toString(), (int)l.linePosX + 15, 7 + AgendaForm.V_SPACING/2);
         }
+
+        //Drawing performances
+        g2d.setClip(null);
+        for(Performance p : Main.festival.performances){
+            int lineIndex = getLineIndexFromTime(p.getBegin());
+            System.out.println(lineIndex);
+            VLine line = vertLines.get(lineIndex);
+            //g2d.draw(new RoundRectangle2D.Double(10.0,10.0,(double)AgendaForm.V_SPACING, 100.0, line.linePosX, (double)AgendaForm.V_SPACING));
+            g2d.setColor(new Color(130, 175, 255));
+            g2d.fillRoundRect((int)line.linePosX,AgendaForm.V_SPACING+5, 100, AgendaForm.V_SPACING - 10,10,10);
+    }
     }
 
     public void createVertLines(int ammount, double offset){
@@ -97,6 +110,14 @@ public class SchedulePainter extends JPanel {
 
     private LocalTime getTime(int index){
         return LocalTime.parse("00:00").plusMinutes(30*index);
+    }
+
+    private int getLineIndexFromTime(LocalTime t){
+        int index = 0;
+        while(LocalTime.parse("00:00").plusMinutes(30*index).isBefore(t)){
+            index++;
+        }
+        return index;
     }
 
     class VLine{

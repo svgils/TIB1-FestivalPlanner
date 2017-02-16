@@ -18,7 +18,7 @@ public class Festival {
     private ArrayList<Artist> artists;
     private ArrayList<Visitor> visitors;
     public ArrayList<Stage> stages;
-    private ArrayList<Performance> performances;
+    public ArrayList<Performance> performances;
 
     private Schedule schedule;
 
