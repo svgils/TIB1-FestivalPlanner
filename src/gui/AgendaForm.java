@@ -27,7 +27,11 @@ public class AgendaForm extends JFrame {
         //setResizable(false);
 
         //Scrollbar stuff
-        scrollBar2.addAdjustmentListener(e -> schedulePainter.scrollPane(e.getValue()));
+        scrollBar2.addAdjustmentListener(e -> {
+            schedulePainter.createVertLines(49, ((double)e.getValue()/90));
+            schedulePainter.repaint();
+            //System.out.println(scrollBar2Pos);
+        });
         scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
 
         menuBar = new JMenuBar();
