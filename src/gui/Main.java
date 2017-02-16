@@ -1,6 +1,8 @@
 package gui;
 
+import assets.Artist;
 import assets.Festival;
+import assets.Performance;
 import assets.Stage;
 import gui.AgendaForm;
 
@@ -35,5 +37,9 @@ public class Main {
         festival.addStage(new Stage("Stage4", ""));
         festival.addStage(new Stage("Stage4", ""));
         festival.addStage(new Stage("Stage123", ""));
+
+        festival.addPerformance(new Performance(new Artist("testguy", "kiphop", 2), festival.stages.get(2), LocalTime.parse("06:00"), LocalTime.parse("07:45")));
+        festival.addPerformance(new Performance(new Artist("testboi", "kipkop", 4), festival.stages.get(3), LocalTime.parse("22:00"), LocalTime.parse("23:12")));
+        festival.addPerformance(new Performance(new Artist("testdude0", "idek", 10000), festival.stages.get(1), LocalTime.parse("22:30"), LocalTime.parse("23:45")));
     }
 }

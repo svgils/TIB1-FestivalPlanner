@@ -49,7 +49,7 @@ public class SchedulePainter extends JPanel {
 //        for(int i = 1; i < (this.getWidth() - hSpaceingFirst) / 50 + 0.5; i++){
 //            if(i == 1) {
                 g2d.setStroke(new BasicStroke(3));
-                g2d.drawLine(posX + (hSpaceingFirst), posY, posX + (hSpaceingFirst), posY + height);
+                g2d.drawLine(posX + (hSpaceingFirst), posY, posX + (hSpaceingFirst), posY + this.getHeight());
 //                posX = hSpaceingFirst;
 //            }
 //            else {
