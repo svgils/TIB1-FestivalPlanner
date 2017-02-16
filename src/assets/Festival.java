@@ -1,5 +1,7 @@
 package assets;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -9,18 +11,18 @@ import java.util.*;
 public class Festival {
     private int visitorAmount;
     private int price;  // prijs in Euro's
-    private int end;    // In uur
-    private int start;  // In Uur
+    private LocalTime end;    // In uur
+    private LocalTime start;  // In Uur
     private String name;
-    private String day;
+    private LocalDate day;
     private ArrayList<Artist> artists;
     private ArrayList<Visitor> visitors;
-    private ArrayList<Stage> stages;
+    public ArrayList<Stage> stages;
     private ArrayList<Performance> performances;
 
     private Schedule schedule;
 
-    public Festival(int visitorAmount, int price, String day, int start, int end, String name) {
+    public Festival(int visitorAmount, int price, LocalDate day, LocalTime start, LocalTime end, String name) {
         this.visitorAmount = visitorAmount;
         this.price = price;
         this.day = day;
@@ -44,11 +46,11 @@ public class Festival {
         this.price = price;
     }
 
-    public void changeEnd(int end) {
+    public void changeEnd(LocalTime end) {
         this.end = end;
     }
 
-    public void changeStart(int start) {
+    public void changeStart(LocalTime start) {
         this.start = start;
     }
 
@@ -56,7 +58,7 @@ public class Festival {
         this.name = name;
     }
 
-    public void changeDay(String day) {
+    public void changeDay(LocalDate day) {
         this.day = day;
     }
 

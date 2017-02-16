@@ -13,8 +13,7 @@ import java.util.Scanner;
  * Created by Stijn on 6-2-2017.
  */
 public class SchedulePainter extends JPanel {
-
-    private Festival festival;
+    int hSpaceingFirst = 0;
 
     public SchedulePainter(){
         super();
@@ -27,31 +26,21 @@ public class SchedulePainter extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setFont(new Font("Arial", 1, 15));
 
+        int startpos = AgendaForm.scrollBar2Pos;
         LocalTime time = LocalTime.parse("00:00");
 
         int posX = 0;
         int posY = 0;
         int width = getWidth();
-        int height = AgendaForm.V_SPACING * (AgendaForm.stages.size() + 1);
+        int height = AgendaForm.V_SPACING * (Main.festival.stages.size() + 1);
 
-        int hSpaceingFirst = 0;
-        for(Stage s : AgendaForm.stages){
+        for(Stage s : Main.festival.stages){
             if(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpaceingFirst - 30)
                 hSpaceingFirst = (int)g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
-            System.out.println(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30);
-            System.out.println(hSpaceingFirst);
-            System.out.println("----------------------");
         }
 
-        //System.out.println(height / 5);
-
-        int hSpacing = (int)Math.floor(width / 6);
-//        if(AgendaForm.stages.size() > 0){
-//            vSpacing = (int)Math.floor(height / AgendaForm.stages.size());}
-//        else vSpacing = (int)Math.floor(height);
-
         //drawing horizontal lines
-        for(int i = 1; i < AgendaForm.stages.size() + 1; i++){
+        for(int i = 1; i < Main.festival.stages.size() + 1; i++){
             if(i == 1) g2d.setStroke(new BasicStroke(3));
             else g2d.setStroke(new BasicStroke(1));
             g2d.drawLine(posX, posY + (AgendaForm.V_SPACING * i), posX + width, posY + (AgendaForm.V_SPACING * i));
@@ -74,7 +63,7 @@ public class SchedulePainter extends JPanel {
         posX = 15;
         posY = AgendaForm.V_SPACING;
 
-        for(Stage s: AgendaForm.stages){
+        for(Stage s: Main.festival.stages){
             g2d.drawString(s.getName(), posX, posY + 7 + AgendaForm.V_SPACING/2);
             posY += AgendaForm.V_SPACING;
         }
@@ -87,27 +76,9 @@ public class SchedulePainter extends JPanel {
              time = getNextTime(time);
              posX += AgendaForm.H_SPACING;
         }
-
-
-        if(festival != null && festival.getPerformances().length > 0)
-        {
-            for(Performance p : festival.getPerformances())
-            {
-
-            }
-        }
     }
 
-    public LocalTime getNextTime(LocalTime t){
-        LocalTime newTime = t.plusMinutes(30);
-        return newTime;
-    }
-
-    public Festival getFestival() {
-        return festival;
-    }
-
-    public void setFestival(Festival festival) {
-        this.festival = festival;
+    private LocalTime getNextTime(LocalTime t){
+        return t.plusMinutes(30);
     }
 }
