@@ -1,5 +1,7 @@
 package gui;
 
+import assets.Festival;
+import assets.Performance;
 import assets.Stage;
 
 import javax.swing.*;
@@ -11,6 +13,8 @@ import java.util.Scanner;
  * Created by Stijn on 6-2-2017.
  */
 public class SchedulePainter extends JPanel {
+
+    private Festival festival;
 
     public SchedulePainter(){
         super();
@@ -84,10 +88,26 @@ public class SchedulePainter extends JPanel {
              posX += AgendaForm.H_SPACING;
         }
 
+
+        if(festival != null && festival.getPerformances().length > 0)
+        {
+            for(Performance p : festival.getPerformances())
+            {
+
+            }
+        }
     }
 
     public LocalTime getNextTime(LocalTime t){
         LocalTime newTime = t.plusMinutes(30);
         return newTime;
+    }
+
+    public Festival getFestival() {
+        return festival;
+    }
+
+    public void setFestival(Festival festival) {
+        this.festival = festival;
     }
 }
