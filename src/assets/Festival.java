@@ -1,8 +1,11 @@
 package assets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -102,9 +105,10 @@ public class Festival implements Serializable {
     }
 
     public void save(String path) throws IOException {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         gson.toJson(this, new FileWriter(path));
     }
+
     public void load(String path) throws FileNotFoundException {
         Gson gson = new Gson();
         Festival f = gson.fromJson(new FileReader(path), Festival.class);

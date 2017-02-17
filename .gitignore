@@ -63,3 +63,4 @@ fabric.properties
 
 # *.iml
 # modules.xml
+!/resources/gson-2.8.0.jar

@@ -30,8 +30,8 @@ public class Main {
     }
 
     public static void createTestFest(){
-        festival = new Festival(10000, 10, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE),
-                LocalTime.parse("06:00"), LocalTime.parse("23:00"), "testfest");
+
+        festival = new Festival(10000, 10, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE), LocalTime.parse("06:00"), LocalTime.parse("23:00"), "testfest");
         festival.addStage(new Stage("Stage1", ""));
         festival.addStage(new Stage("Stage2", ""));
         festival.addStage(new Stage("Stage3", ""));
@@ -44,11 +44,5 @@ public class Main {
         festival.addPerformance(new Performance(new Artist("testdude0", "idek", 10000), festival.getStage(3), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
         festival.addPerformance(new Performance(new Artist("testdude1", "idek", 1000), festival.getStage(4), LocalTime.parse("22:45"), LocalTime.parse("23:55")));
         festival.addPerformance(new Performance(new Artist("testdude2", "idek", 300), festival.getStage(5), LocalTime.parse("22:27"), LocalTime.parse("23:55")));
-
-        try {
-            festival.save("../file.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
