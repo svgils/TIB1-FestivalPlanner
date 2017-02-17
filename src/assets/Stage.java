@@ -5,12 +5,14 @@ package assets;
  */
 
 public class Stage  {
+    public int index;
     private String name;
     private String location;
 
-    public Stage(String name, String location){
+    public Stage(String name, String location, int index){
         this.name = name;
         this.location = location;
+        this.index = index;
     }
 
     public String getName(){

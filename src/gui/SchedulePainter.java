@@ -3,12 +3,16 @@ package gui;
 import assets.Festival;
 import assets.Performance;
 import assets.Stage;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -92,16 +96,22 @@ public class SchedulePainter extends JPanel {
         //Drawing performances
         g2d.setClip(null);
         for(Performance p : Main.festival.performances){
-            int lineIndex = getLineIndexFromTime(p.getBegin());
-            System.out.println(lineIndex);
-            VLine line = vertLines.get(lineIndex);
+            //int lineIndexStart = getLineIndexFromTime(p.getBegin());
+            //int lineIndexEnd = getLineIndexFromTime(p.getEnd());
+            //System.out.println(lineIndex);
+            //VLine lineStart = vertLines.get(lineIndexStart);
+            //VLine lineEnd = vertLines.get(lineIndexEnd);
             //g2d.draw(new RoundRectangle2D.Double(10.0,10.0,(double)AgendaForm.V_SPACING, 100.0, line.linePosX, (double)AgendaForm.V_SPACING));
             g2d.setColor(new Color(130, 175, 255));
-            g2d.fillRoundRect((int)line.linePosX,AgendaForm.V_SPACING+5, 100, AgendaForm.V_SPACING - 10,10,10);
-    }
+            g2d.setClip(hSpaceingFirst + 2, 0, this.getWidth() - hSpaceingFirst, this.getHeight());
+            g2d.fillRoundRect((int)getLineIndexFromTime(p.getBegin(), 0),AgendaForm.V_SPACING * p.getStage().index+5, (int)getLineIndexFromTime(p.getEnd(),1) - (int)getLineIndexFromTime(p.getBegin(), 0), AgendaForm.V_SPACING - 10,10,10);
+            //g2d.drawString(p.getAtrist(), );
+            //(int)lineEnd.linePosX - (int)lineStart.linePosX
+        }
+        g2d.setClip(null);
     }
 
-    public void createVertLines(int ammount, double offset){
+    void createVertLines(int ammount, double offset){
         vertLines.clear();
         for(int i=0; i < ammount; i++){
             vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset * (double)this.getWidth()), i));
@@ -112,12 +122,27 @@ public class SchedulePainter extends JPanel {
         return LocalTime.parse("00:00").plusMinutes(30*index);
     }
 
-    private int getLineIndexFromTime(LocalTime t){
+    private double getLineIndexFromTime(LocalTime t, int startOrEnd){
+        //System.out.println(t.toString());
+        LocalDateTime tm = LocalDate.parse("0001-01-01", DateTimeFormatter.ISO_DATE).atTime(t);
         int index = 0;
-        while(LocalTime.parse("00:00").plusMinutes(30*index).isBefore(t)){
-            index++;
+        if(startOrEnd == 0) {
+            while (LocalDateTime.parse("0001-01-01T00:00").plusMinutes(30 * index).isBefore(tm)) {
+                index++;
+            }
         }
-        return index;
+        else{
+            while (LocalDateTime.parse("0001-01-01T00:00").plusMinutes(30 * index).isBefore(tm)) {
+                index++;
+            }
+            index--;
+        }
+        double modMin;
+        if(tm.getMinute() > 30) modMin = tm.minusMinutes(30).getMinute();
+        else modMin = tm.getMinute();
+        System.out.println(modMin);
+        double pos = vertLines.get(index).linePosX + ((double)AgendaForm.H_SPACING * (modMin / 30.0));
+        return pos;
     }
 
     class VLine{
