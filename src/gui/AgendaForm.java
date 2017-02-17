@@ -1,7 +1,13 @@
 package gui;
 
+import assets.Festival;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class AgendaForm extends JFrame {
     private JPanel mainPanel;
@@ -10,6 +16,8 @@ public class AgendaForm extends JFrame {
     private SchedulePainter schedulePainter;
     private JMenuBar menuBar;
     private JMenu menuFile;
+    private JMenuItem saveItem;
+    private JMenuItem loadItem;
 
     final static int H_SPACING = 70;
     final static int V_SPACING = 50;
@@ -37,6 +45,33 @@ public class AgendaForm extends JFrame {
 
         menuBar = new JMenuBar();
         menuFile = new JMenu("File");
+
+        saveItem = new JMenuItem("save file");
+        saveItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Main.festival.save("./file.json");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        loadItem = new JMenuItem("load file");
+        loadItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Main.festival.load("./file.json");
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        menuFile.add(saveItem);
+        menuFile.add(loadItem);
+
         menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
