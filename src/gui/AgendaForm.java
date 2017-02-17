@@ -22,7 +22,7 @@ public class AgendaForm extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainPanel.setPreferredSize(new Dimension(screensize.width, 70 + V_SPACING * Main.festival.stages.size() + V_SPACING));
+        mainPanel.setPreferredSize(new Dimension(screensize.width, 70 + V_SPACING * Main.festival.getStages().size() + V_SPACING));
 
         //setResizable(false);
 
@@ -31,6 +31,7 @@ public class AgendaForm extends JFrame {
             schedulePainter.createVertLines(49, ((double)e.getValue()/90));
             schedulePainter.repaint();
             //System.out.println(scrollBar2Pos);
+            System.out.println(e.getValue());
         });
         scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
 
