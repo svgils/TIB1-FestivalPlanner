@@ -37,15 +37,15 @@ public class SchedulePainter extends JPanel {
         int posX = 0;
         int posY = 0;
         int width = getWidth();
-        int height = AgendaForm.V_SPACING * (Main.festival.stages.size() + 1);
+        int height = AgendaForm.V_SPACING * (Main.festival.getStages().length + 1);
 
-        for(Stage s : Main.festival.stages){
+        for(Stage s : Main.festival.getStages()){
             if(g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpaceingFirst - 30)
                 hSpaceingFirst = (int)g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
         }
 
         //drawing horizontal lines
-        for(int i = 1; i < Main.festival.stages.size() + 1; i++){
+        for(int i = 1; i < Main.festival.getStages().length + 1; i++){
             if(i == 1) g2d.setStroke(new BasicStroke(3));
             else g2d.setStroke(new BasicStroke(1));
             g2d.drawLine(posX, posY + (AgendaForm.V_SPACING * i), posX + width, posY + (AgendaForm.V_SPACING * i));
@@ -82,7 +82,7 @@ public class SchedulePainter extends JPanel {
         posX = 15;
         posY = AgendaForm.V_SPACING;
 
-        for(Stage s: Main.festival.stages){
+        for(Stage s: Main.festival.getStages()){
             g2d.drawString(s.getName(), posX, posY + 7 + AgendaForm.V_SPACING/2);
             posY += AgendaForm.V_SPACING;
         }
@@ -95,7 +95,7 @@ public class SchedulePainter extends JPanel {
 
         //Drawing performances
         g2d.setClip(null);
-        for(Performance p : Main.festival.performances){
+        for(Performance p : Main.festival.getPerformances()){
             //int lineIndexStart = getLineIndexFromTime(p.getBegin());
             //int lineIndexEnd = getLineIndexFromTime(p.getEnd());
             //System.out.println(lineIndex);
