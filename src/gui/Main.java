@@ -20,6 +20,11 @@ public class Main {
 
     public static void main(String[] args){
         createTestFest();
+        try {
+            festival.save("./" + festival.getName() + ".json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mp = new AgendaForm();
     }
 
