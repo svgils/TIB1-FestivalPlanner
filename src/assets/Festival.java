@@ -2,6 +2,7 @@ package assets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import gui.Main;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -106,7 +107,11 @@ public class Festival implements Serializable {
 
     public void save(String path) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        gson.toJson(this, new FileWriter(path));
+        System.out.println(gson.toJson(this));
+        File output = new File(path);
+        FileWriter writer = new FileWriter(output);
+        gson.toJson(this, writer);
+        writer.close();
     }
 
     public void load(String path) throws FileNotFoundException {
