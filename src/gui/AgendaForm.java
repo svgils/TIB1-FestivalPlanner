@@ -17,10 +17,15 @@ public class AgendaForm extends JFrame {
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
     private SchedulePainter schedulePainter;
+
     private JMenuBar menuBar;
     private JMenu menuFile;
+    private JMenu menuEdit;
     private JMenuItem saveItem;
     private JMenuItem loadItem;
+    private JMenuItem newFestival;
+    private JMenuItem addStage;
+    private JMenuItem addPerformance;
 
     final static int H_SPACING = 70;
     final static int V_SPACING = 50;
@@ -35,21 +40,30 @@ public class AgendaForm extends JFrame {
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
         mainPanel.setPreferredSize(new Dimension(screensize.width, 70 + V_SPACING * Main.festival.getStages().size() + V_SPACING));
 
-        //setResizable(false);
 
         //Scrollbar stuff
         scrollBar2.addAdjustmentListener(e -> {
             schedulePainter.createVertLines(49, ((double)e.getValue()/90));
             schedulePainter.repaint();
-            //System.out.println(scrollBar2Pos);
-            System.out.println(e.getValue());
         });
         scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
 
+
+        //Menu stuff
         menuBar = new JMenuBar();
         menuFile = new JMenu("File");
+        menuEdit = new JMenu("Edit");
 
-        saveItem = new JMenuItem("save file");
+        newFestival = new JMenuItem("New Festival");
+        newFestival.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //@TODO implement new festival dialog
+            }
+        });
+
+        // Functionality for saving festivals
+        saveItem = new JMenuItem("Save File");
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,7 +86,9 @@ public class AgendaForm extends JFrame {
                 }
             }
         });
-        loadItem = new JMenuItem("load file");
+
+        //functionality for loading festivals
+        loadItem = new JMenuItem("Load File");
         loadItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,10 +109,30 @@ public class AgendaForm extends JFrame {
             }
         });
 
+        addStage = new JMenuItem("Add Stage");
+        addStage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //@TODO implement add stage dialog
+            }
+        });
+
+        addPerformance = new JMenuItem("Add Performance");
+        addPerformance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //@TODO implement add performance dialog
+            }
+        });
+
         menuFile.add(saveItem);
         menuFile.add(loadItem);
 
+        menuEdit.add(addStage);
+        menuEdit.add(addPerformance);
+
         menuBar.add(menuFile);
+        menuBar.add(menuEdit);
 
         setJMenuBar(menuBar);
         setContentPane(mainPanel);

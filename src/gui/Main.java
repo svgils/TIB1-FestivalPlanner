@@ -38,10 +38,10 @@ public class Main {
         festival.addStage(new Stage("Stage5", ""));
         festival.addStage(new Stage("Stage6", ""));
 
-        festival.addPerformance(new Performance(new Artist("testguy", "kiphop", 2), festival.getStage(1), LocalTime.parse("06:00"), LocalTime.parse("07:45")));
-        festival.addPerformance(new Performance(new Artist("testboi", "kipkop", 4), festival.getStage(2 ), LocalTime.parse("22:00"), LocalTime.parse("23:12")));
-        festival.addPerformance(new Performance(new Artist("testdude0", "idek", 10000), festival.getStage(3), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
-        festival.addPerformance(new Performance(new Artist("testdude1", "idek", 1000), festival.getStage(4), LocalTime.parse("22:45"), LocalTime.parse("23:55")));
-        festival.addPerformance(new Performance(new Artist("testdude2", "idek", 300), festival.getStage(5), LocalTime.parse("22:27"), LocalTime.parse("23:55")));
+        festival.addPerformance(new Performance(new Artist("testartist1", "gen1", 2), festival.getStage(1), LocalTime.parse("06:00"), LocalTime.parse("07:45")));
+        festival.addPerformance(new Performance(new Artist("testartist2", "gen1", 4), festival.getStage(2 ), LocalTime.parse("22:00"), LocalTime.parse("23:12")));
+        festival.addPerformance(new Performance(new Artist("testartist3", "gen2", 10000), festival.getStage(3), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
+        festival.addPerformance(new Performance(new Artist("testartist4", "gen3", 1000), festival.getStage(4), LocalTime.parse("22:45"), LocalTime.parse("23:55")));
+        festival.addPerformance(new Performance(new Artist("testartist5", "gen2", 300), festival.getStage(5), LocalTime.parse("22:27"), LocalTime.parse("23:55")));
     }
 }
