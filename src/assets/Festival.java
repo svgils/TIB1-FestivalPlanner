@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -14,21 +15,21 @@ import java.util.*;
 public class Festival implements Serializable {
     private int visitorAmount;
     private int price;  // prijs in Euro's
-    private int end;    // In uur
-    private int start;  // In Uur
+    private LocalTime end;    // In uur
+    private LocalTime start;  // In Uur
     private String name;
-    private String day;
+    private LocalDate day;
     private ArrayList<Artist> artists;
     private ArrayList<Visitor> visitors;
     private ArrayList<Stage> stages;
     private ArrayList<Performance> performances;
 
-    public Festival(int visitorAmount, int price, LocalDate parse, LocalTime localTime, LocalTime time, String testfest)
+    public Festival()
     {
-        this(0, 0, "", 0, 0, "");
+        this(0, 0, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE), LocalTime.parse("06:00"), LocalTime.parse("23:00"), "fest");
     }
 
-    public Festival(int visitorAmount, int price, String day, int start, int end, String name) {
+    public Festival(int visitorAmount, int price, LocalDate day, LocalTime start, LocalTime end, String name) {
         this.visitorAmount = visitorAmount;
         this.price = price;
         this.day = day;
@@ -42,16 +43,16 @@ public class Festival implements Serializable {
         performances = new ArrayList<>();
     }
 
-    public void setDay(String day) { this.day = day; }
-    public void setStart(int start) { this.start = start; }
-    public void setEnd(int end) { this.end = end; }
+    public void setDay(LocalDate day) { this.day = day; }
+    public void setStart(LocalTime start) { this.start = start; }
+    public void setEnd(LocalTime end) { this.end = end; }
     public void setVisitorAmount(int visitorAmount) { this.visitorAmount = visitorAmount; }
     public void setPrice(int price) { this.price = price; }
     public void setName(String name) { this.name = name; }
 
-    public String getDay() { return this.day; }
-    public int getStart() { return this.start; }
-    public int getEnd() { return this.end; }
+    public LocalDate getDay() { return this.day; }
+    public LocalTime getStart() { return this.start; }
+    public LocalTime getEnd() { return this.end; }
     public int getVisitorAmount() { return this.visitorAmount; }
     public int getPrice() { return this.price; }
     public String getName() { return this.name; }
@@ -67,10 +68,10 @@ public class Festival implements Serializable {
     }
     public void addVisitor(Visitor visitor) { visitors.add(visitor); }
 
-    public void addPerformances(Performance[] performances) { Collections.addAll(this.performances, performances); }
-    public void addArtists(Artist[] artists) { Collections.addAll(this.artists, artists); }
-    public void addStages(Stage[] stages) { Collections.addAll(this.stages, stages); }
-    public void addVisitors(Visitor[] visitors) { Collections.addAll(this.visitors, visitors); }
+    public void addPerformances(ArrayList<Performance> performances) { this.performances = performances; }
+    public void addArtists(ArrayList<Artist> artists) { this.artists = artists; }
+    public void addStages(ArrayList<Stage> stages) { this.stages = stages; }
+    public void addVisitors(ArrayList<Visitor> visitors) { this.visitors = visitors; }
 
     public Performance getPerformance(int index) { return performances.get(index); }
     public Artist getArtist(int index) { return artists.get(index); }
@@ -79,16 +80,12 @@ public class Festival implements Serializable {
     }
     public Visitor getVisitor(int index) { return visitors.get(index); }
 
-    public Performance[] getPerformances() {
-        return (Performance[])performances.toArray();
+    public ArrayList<Performance> getPerformances() { return performances; }
+    public ArrayList<Stage> getStages() { return stages; }
+    public ArrayList<Artist> getArtists() {
+        return artists;
     }
-    public Stage[] getStages() {
-        return (Stage[])stages.toArray();
-    }
-    public Artist[] getArtists() {
-        return (Artist[])stages.toArray();
-    }
-    public Visitor[] getVisitors() { return (Visitor[])visitors.toArray();}
+    public ArrayList<Visitor> getVisitors() { return visitors; }
 
     public String toString(){
         String lijst = "";
