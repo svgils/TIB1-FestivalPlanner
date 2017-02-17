@@ -3,9 +3,12 @@ package gui;
 import assets.Festival;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -50,8 +53,20 @@ public class AgendaForm extends JFrame {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String savePath = "";
+                JFileChooser fileChooser = new JFileChooser(".");
+                fileChooser.setDialogTitle("Choose save location");
+                fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+                fileChooser.setSelectedFile(new File("festival.json"));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Json file", "json"));
+                if(fileChooser.showSaveDialog(saveItem) == JFileChooser.APPROVE_OPTION){
+                    savePath = fileChooser.getSelectedFile().toString();
+                    if (!savePath .endsWith(".json"))
+                        savePath += ".json";
+                }
+
                 try {
-                    Main.festival.save("./file.json");
+                    Main.festival.save(savePath);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -61,8 +76,17 @@ public class AgendaForm extends JFrame {
         loadItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                File fileToOpen = null;
+                JFileChooser fileChooser = new JFileChooser(".");
+                fileChooser.setDialogTitle("Choose file to open");
+                fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Json file", "json"));
+                if(fileChooser.showOpenDialog(loadItem) == JFileChooser.APPROVE_OPTION){
+                    fileToOpen = fileChooser.getSelectedFile();
+                }
+
                 try {
-                    Main.festival.load("./file.json");
+                    Main.festival.load(fileToOpen.toString());
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
