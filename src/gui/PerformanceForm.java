@@ -12,5 +12,5 @@ public class PerformanceForm extends JFrame {
     private JTextField textField2;
     private JTextField textField1;
     private JButton okButton;
-    private JButton cancelButton;
+    private JButton cancelButton;}
 
