@@ -4,10 +4,8 @@ import assets.Artist;
 import assets.Festival;
 import assets.Performance;
 import assets.Stage;
-import gui.AgendaForm;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +30,7 @@ public class Main {
     public static void createTestFest(){
 
         festival = new Festival(10000, 10, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE), LocalTime.parse("06:00"), LocalTime.parse("23:00"), "testfest");
+
         festival.addStage(new Stage("Stage1", ""));
         festival.addStage(new Stage("Stage2", ""));
         festival.addStage(new Stage("Stage3", ""));

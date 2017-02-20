@@ -107,6 +107,7 @@ public class Festival implements Serializable {
     public void save(String path) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         gson.toJson(this, new FileWriter(path));
+        Files.createFile(Paths.get(path));
     }
 
     public void load(String path) throws FileNotFoundException {
