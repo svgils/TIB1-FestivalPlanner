@@ -35,7 +35,7 @@ public class Main {
         festival.addStage(new Stage("Stage1", ""));
         festival.addStage(new Stage("Stage2", ""));
         festival.addStage(new Stage("Stage3", ""));
-        festival.addStage(new Stage("Stage4", ""));
+        festival.addStage(new Stage("Stagesdfassadasdsadadasddadasd4", ""));
         festival.addStage(new Stage("Stage5", ""));
         festival.addStage(new Stage("Stage6", ""));
 

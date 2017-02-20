@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by Stijn on 6-2-2017.
  */
 public class SchedulePainter extends JPanel {
-    private int hSpaceingFirst = 0;
+    private int hSpacingFirst = 0;
     private ArrayList<VLine> vertLines = new ArrayList<>();
     private ArrayList<Block> blocks = new ArrayList<>();
     int infoBoxX;
@@ -69,8 +69,8 @@ public class SchedulePainter extends JPanel {
         int height = AgendaForm.V_SPACING * (Main.festival.getStages().size() + 1);
 
         for (Stage s : Main.festival.getStages()) {
-            if (g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpaceingFirst - 30)
-                hSpaceingFirst = (int) g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
+            if (g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpacingFirst - 30)
+                hSpacingFirst = (int) g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
         }
 
         //drawing horizontal lines
@@ -82,7 +82,7 @@ public class SchedulePainter extends JPanel {
 
         //drawing vertical lines
         g2d.setStroke(new BasicStroke(3));
-        g2d.drawLine(posX + (hSpaceingFirst), posY, posX + (hSpaceingFirst), posY + this.getHeight());
+        g2d.drawLine(posX + (hSpacingFirst), posY, posX + (hSpacingFirst), posY + this.getHeight());
 
         if (vertLines.isEmpty()) {
             createVertLines(49, 0);
@@ -92,7 +92,7 @@ public class SchedulePainter extends JPanel {
 
         g2d.setStroke(new BasicStroke(1));
         for (VLine l : vertLines) {
-            if (l.linePosX > hSpaceingFirst)
+            if (l.linePosX > hSpacingFirst)
                 g2d.drawLine((int) l.linePosX, 0, (int) l.linePosX, this.getHeight());
         }
 
@@ -106,7 +106,7 @@ public class SchedulePainter extends JPanel {
         }
 
         //drawing times
-        g2d.setClip(new Rectangle(new Point(hSpaceingFirst, 0), new Dimension((this.getWidth() - hSpaceingFirst), AgendaForm.V_SPACING)));
+        g2d.setClip(new Rectangle(new Point(hSpacingFirst, 0), new Dimension((this.getWidth() - hSpacingFirst), AgendaForm.V_SPACING)));
         for (VLine l : vertLines) {
             g2d.drawString(getTime(l.index).toString(), (int) l.linePosX + 15, 7 + AgendaForm.V_SPACING / 2);
         }
@@ -117,7 +117,7 @@ public class SchedulePainter extends JPanel {
         blocks.clear();
         for (Performance p : Main.festival.getPerformances()) {
 
-            g2d.setClip(hSpaceingFirst + 2, 0, this.getWidth() - hSpaceingFirst, this.getHeight());
+            g2d.setClip(hSpacingFirst + 2, 0, this.getWidth() - hSpacingFirst, this.getHeight());
             int x = (int) getLineIndexFromTime(p.getBegin());
             int length = (int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
             blocks.add(new Block(new RoundRectangle2D.Double(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10), p));
@@ -133,7 +133,6 @@ public class SchedulePainter extends JPanel {
         g2d.setClip(null);
         if(drawInfoBox){
             FontMetrics metrics = g.getFontMetrics(g.getFont());
-            System.out.println(countLines(performanceInfo));
             String lines[] = performanceInfo.split("\\r?\\n");
             int boxWidth = 0;
             for(String s : lines){
@@ -155,10 +154,11 @@ public class SchedulePainter extends JPanel {
             g.drawString(line, x, y += g.getFontMetrics().getHeight());
     }
 
-    void createVertLines(int ammount, double offset){
+    void createVertLines(int amount, double offset){
         vertLines.clear();
-        for(int i=0; i < ammount; i++){
-            vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset/2 * (this.getWidth() + (AgendaForm.H_SPACING * ammount - this.getWidth()))), i));
+        System.out.println(offset);
+        for(int i=0; i < amount; i++){
+            vertLines.add(new VLine((double)(hSpacingFirst + i * AgendaForm.H_SPACING) - (offset * (AgendaForm.H_SPACING * amount - getWidth() + hSpacingFirst)), i));
         }
     }
 
