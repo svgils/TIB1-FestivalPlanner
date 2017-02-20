@@ -45,10 +45,14 @@ public class SchedulePainter extends JPanel {
                         drawInfoBox = true;
                         repaint();
                         break;
+                    } else {
+                        drawInfoBox = false;
+                        repaint();
                     }
-                    else{drawInfoBox = false; repaint();}
                 }
-            }});
+            }
+        });
+
     }
 
     //private
@@ -116,11 +120,11 @@ public class SchedulePainter extends JPanel {
             g2d.setClip(hSpaceingFirst + 2, 0, this.getWidth() - hSpaceingFirst, this.getHeight());
             int x = (int) getLineIndexFromTime(p.getBegin());
             int length = (int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
-            blocks.add(new Block(new RoundRectangle2D.Double(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10), p));
+            blocks.add(new Block(new RoundRectangle2D.Double(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10), p));
             g2d.setColor(new Color(130, 175, 255));
-            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
+            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
             g2d.setColor(Color.black);
-            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 30);
+            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 30 + AgendaForm.V_SPACING);
             //g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
 
         }
