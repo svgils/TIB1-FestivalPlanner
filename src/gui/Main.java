@@ -44,5 +44,6 @@ public class Main {
         festival.addPerformance(new Performance(new Artist("testartist3", "gen2", 10000), festival.getStage(2), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
         festival.addPerformance(new Performance(new Artist("testartist4", "gen3", 1000), festival.getStage(3), LocalTime.parse("22:45"), LocalTime.parse("23:55")));
         festival.addPerformance(new Performance(new Artist("testartist5", "gen2", 300), festival.getStage(4), LocalTime.parse("22:27"), LocalTime.parse("23:55")));
+        festival.addPerformance(new Performance(new Artist("testartist5", "gen2", 300), festival.getStage(5), LocalTime.parse("13:25"), LocalTime.parse("18:55")));
     }
 }
