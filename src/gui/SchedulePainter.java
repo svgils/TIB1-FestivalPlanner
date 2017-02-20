@@ -129,6 +129,7 @@ public class SchedulePainter extends JPanel {
 
         }
 
+        //Drawing popup info
         g2d.setClip(null);
         if(drawInfoBox){
             FontMetrics metrics = g.getFontMetrics(g.getFont());
@@ -157,7 +158,7 @@ public class SchedulePainter extends JPanel {
     void createVertLines(int ammount, double offset){
         vertLines.clear();
         for(int i=0; i < ammount; i++){
-            vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset/2 * (AgendaForm.H_SPACING * ammount)), i));
+            vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset/2 * (this.getWidth() + (AgendaForm.H_SPACING * ammount - this.getWidth()))), i));
         }
     }
 
