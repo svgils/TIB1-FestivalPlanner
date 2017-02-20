@@ -108,8 +108,8 @@ public class SchedulePainter extends JPanel {
                 //g2d.draw(new RoundRectangle2D.Double(10.0,10.0,(double)AgendaForm.V_SPACING, 100.0, line.linePosX, (double)AgendaForm.V_SPACING));
                 g2d.setColor(new Color(130, 175, 255));
                 g2d.setClip(hSpaceingFirst + 2, 0, this.getWidth() - hSpaceingFirst, this.getHeight());
-                int x = (int) getLineIndexFromTime(p.getBegin(), 0);
-                int length =(int) getLineIndexFromTime(p.getEnd(), 1) - (int) getLineIndexFromTime(p.getBegin(), 0);
+                int x = (int) getLineIndexFromTime(p.getBegin());
+                int length =(int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
                 g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
                 g2d.setColor(Color.black);
                 g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 30);
@@ -131,27 +131,14 @@ public class SchedulePainter extends JPanel {
         return LocalTime.parse("00:00").plusMinutes(30*index);
     }
 
-    private double getLineIndexFromTime(LocalTime t, int startOrEnd){
+    private double getLineIndexFromTime(LocalTime t){
         //System.out.println(t.toString());
         LocalDateTime tm = LocalDate.parse("0001-01-01", DateTimeFormatter.ISO_DATE).atTime(t);
-        int index = 0;
-        if(startOrEnd == 0) {
-            while (LocalDateTime.parse("0001-01-01T00:00").plusMinutes(30 * index).isBefore(tm)) {
-                index++;
-            }
-        }
-        else{
-            while (LocalDateTime.parse("0001-01-01T00:00").plusMinutes(30 * index).isBefore(tm)) {
-                index++;
-            }
-            index--;
-        }
+        int index = tm.getHour() * 2;
+
         double modMin;
-        if(tm.getMinute() > 30)
-            modMin = tm.minusMinutes(30).getMinute();
-        else
+
             modMin = tm.getMinute();
-        //System.out.println(modMin);
         double pos = vertLines.get(index).linePosX + ((double)AgendaForm.H_SPACING * (modMin / 30.0));
         return pos;
     }
