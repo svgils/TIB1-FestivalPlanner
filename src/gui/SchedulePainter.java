@@ -98,7 +98,6 @@ public class SchedulePainter extends JPanel {
 
             //Drawing performances
             g2d.setClip(null);
-            int s = 0;
             for (Performance p : Main.festival.getPerformances()) {
                 //int lineIndexStart = getLineIndexFromTime(p.getBegin());
                 //int lineIndexEnd = getLineIndexFromTime(p.getEnd());
@@ -123,7 +122,7 @@ public class SchedulePainter extends JPanel {
     void createVertLines(int ammount, double offset){
         vertLines.clear();
         for(int i=0; i < ammount; i++){
-            vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset * (AgendaForm.H_SPACING * 49)), i));
+            vertLines.add(new VLine((double)(hSpaceingFirst + i * AgendaForm.H_SPACING) - (offset/2 * (AgendaForm.H_SPACING * ammount)), i));
         }
     }
 
@@ -139,8 +138,7 @@ public class SchedulePainter extends JPanel {
         double modMin;
 
             modMin = tm.getMinute();
-        double pos = vertLines.get(index).linePosX + ((double)AgendaForm.H_SPACING * (modMin / 30.0));
-        return pos;
+        return vertLines.get(index).linePosX + ((double)AgendaForm.H_SPACING * (modMin / 30.0));
     }
 
     class VLine{

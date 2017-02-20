@@ -46,6 +46,7 @@ public class AgendaForm extends JFrame {
             schedulePainter.createVertLines(49, ((double)e.getValue()/90));
             schedulePainter.repaint();
         });
+        scrollBar1.setVisibleAmount(100);
         scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
 
 
