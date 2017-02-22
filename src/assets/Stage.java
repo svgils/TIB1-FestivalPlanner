@@ -21,4 +21,8 @@ public class Stage  {
         return location;
     }
 
+    public String toString(){
+        return name;
+    }
+
 }

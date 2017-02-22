@@ -30,7 +30,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="b527f" class="gui.SchedulePainter" binding="schedulePainter">
+          <component id="96d90" class="gui.SchedulePainter" binding="schedulePainter">
             <constraints>
               <card name="Card1"/>
             </constraints>

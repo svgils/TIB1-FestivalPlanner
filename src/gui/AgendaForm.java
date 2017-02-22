@@ -59,7 +59,7 @@ public class AgendaForm extends JFrame {
         newFestival.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //@TODO implement new festival dialog
+                new NewFestivalForm();
             }
         });
 
@@ -114,7 +114,7 @@ public class AgendaForm extends JFrame {
         addStage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //@TODO implement add stage dialog
+                new StageForm();
             }
         });
 
@@ -122,12 +122,13 @@ public class AgendaForm extends JFrame {
         addPerformance.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //@TODO implement add performance dialog
+                new PerformanceForm();
             }
         });
 
         menuFile.add(saveItem);
         menuFile.add(loadItem);
+        menuFile.add(newFestival);
 
         menuEdit.add(addStage);
         menuEdit.add(addPerformance);
