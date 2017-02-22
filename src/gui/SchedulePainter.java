@@ -156,7 +156,6 @@ public class SchedulePainter extends JPanel {
 
     void createVertLines(int amount, double offset){
         vertLines.clear();
-        System.out.println(offset);
         for(int i=0; i < amount; i++){
             vertLines.add(new VLine((double)(hSpacingFirst + i * AgendaForm.H_SPACING) - (offset * (AgendaForm.H_SPACING * amount - getWidth() + hSpacingFirst)), i));
         }
