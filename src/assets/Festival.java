@@ -2,11 +2,8 @@ package assets;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import gui.Main;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -105,29 +102,32 @@ public class Festival implements Serializable {
         System.out.println(toString());
     }
 
-    public void save(String path) throws IOException {
+    public static void save(String path, Festival festival) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(this));
         File output = new File(path);
         FileWriter writer = new FileWriter(output);
-        gson.toJson(this, writer);
+        gson.toJson(festival, writer);
         writer.close();
     }
 
-    public void load(String path) throws FileNotFoundException {
+    public static Festival load(String path) throws FileNotFoundException {
         Gson gson = new Gson();
-        Festival f = gson.fromJson(new FileReader(path), Festival.class);
+        return gson.fromJson(new FileReader(path), Festival.class);
 
-        this.setDay(f.getDay());
-        this.setEnd(f.getEnd());
-        this.setName(f.getName());
-        this.setPrice(f.getPrice());
-        this.setVisitorAmount(f.getVisitorAmount());
-        this.setStart(f.getStart());
+//        Type listOfTestObject = new TypeToken<List<TestObject>>(){}.getType();
+//        String s = gson.toJson(list, listOfTestObject);
+//        List<TestObject> list2 = gson.fromJson(s, listOfTestObject);
 
-        this.addPerformances(f.getPerformances());
-        this.addStages(f.getStages());
-        this.addArtists(f.getArtists());
-        this.addVisitors(f.getVisitors());
+//        this.setDay(f.getDay());
+//        this.setEnd(f.getEnd());
+//        this.setName(f.getName());
+//        this.setPrice(f.getPrice());
+//        this.setVisitorAmount(f.getVisitorAmount());
+//        this.setStart(f.getStart());
+//
+//        this.addPerformances(f.getPerformances());
+//        this.addStages(f.getStages());
+//        this.addArtists(f.getArtists());
+//        this.addVisitors(f.getVisitors());
     }
 }

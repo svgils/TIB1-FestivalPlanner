@@ -81,7 +81,7 @@ public class AgendaForm extends JFrame {
                 }
 
                 try {
-                    Main.festival.save(savePath);
+                    Festival.save(savePath, Main.festival);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -103,7 +103,7 @@ public class AgendaForm extends JFrame {
                 }
 
                 try {
-                    Main.festival.load(fileToOpen.toString());
+                    Main.festival = Festival.load(fileToOpen.toString());
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }

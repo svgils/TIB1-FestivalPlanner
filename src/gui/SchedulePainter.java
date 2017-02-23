@@ -8,11 +8,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.RoundRectangle2D;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Stijn on 6-2-2017.
@@ -116,16 +118,37 @@ public class SchedulePainter extends JPanel {
         g2d.setClip(null);
 
         blocks.clear();
-        for (Performance p : Main.festival.getPerformances()) {
+//        for (Performance p : Main.festival.getPerformances()) {
+//
+//            g2d.setClip(hSpacingFirst + 2, 0, this.getWidth() - hSpacingFirst, this.getHeight());
+//            int x = (int) getLineIndexFromTime(p.getBegin());
+//            int length = (int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
+//            blocks.add(new Block(new RoundRectangle2D.Double(x,
+//                                                            AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING,
+//                                                            length, AgendaForm.V_SPACING - 10, 10, 10), p));
+//            g2d.setColor(new Color(130, 175, 255));
+//            System.out.println(Main.festival.getStages().size());
+//            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
+//            g2d.setColor(Color.black);
+//            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 30 + AgendaForm.V_SPACING);
+//            //g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
+//
+//        }
+        ArrayList<Performance> performances = Main.festival.getPerformances();
+        for (int i = 0; i < performances.size(); i++) {
+            Performance p = performances.get(i);
 
             g2d.setClip(hSpacingFirst + 2, 0, this.getWidth() - hSpacingFirst, this.getHeight());
             int x = (int) getLineIndexFromTime(p.getBegin());
             int length = (int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
-            blocks.add(new Block(new RoundRectangle2D.Double(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10), p));
+            blocks.add(new Block(new RoundRectangle2D.Double(x,
+                    AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING,
+                    length, AgendaForm.V_SPACING - 10, 10, 10), p));
             g2d.setColor(new Color(130, 175, 255));
-            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
+            System.out.println(Main.festival.getStages().size());
+            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
             g2d.setColor(Color.black);
-            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 30 + AgendaForm.V_SPACING);
+            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (i) + 30 + AgendaForm.V_SPACING);
             //g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
 
         }
