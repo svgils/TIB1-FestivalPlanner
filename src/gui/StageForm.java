@@ -1,6 +1,10 @@
 package gui;
 
+import assets.Stage;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Bobsk on 20-2-2017.
@@ -14,6 +18,16 @@ public class StageForm extends JFrame{
 
     public StageForm(){
         super("Add Stage");
+
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY));
+                Main.mp.schedulePainter.repaint();
+                StageForm.super.dispose();
+            }
+        });
+
         setContentPane(panel1);
         setVisible(true);
         pack();

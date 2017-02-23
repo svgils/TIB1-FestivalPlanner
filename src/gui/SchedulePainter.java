@@ -68,6 +68,7 @@ public class SchedulePainter extends JPanel {
         int width = getWidth();
         int height = AgendaForm.V_SPACING * (Main.festival.getStages().size() + 1);
 
+        hSpacingFirst = 0;
         for (Stage s : Main.festival.getStages()) {
             if (g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpacingFirst - 30)
                 hSpacingFirst = (int) g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;

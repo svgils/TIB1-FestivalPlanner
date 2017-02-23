@@ -87,25 +87,21 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="b1ba" class="javax.swing.JTextField" binding="txtStart">
+              <component id="47ef9" class="gui.PlaceholderTextField" binding="txtStartTime">
                 <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="27"/>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="250" height="27"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <text value="HH:MM"/>
-                </properties>
+                <properties/>
               </component>
-              <component id="f1c71" class="javax.swing.JTextField" binding="txtEnd">
+              <component id="1c786" class="gui.PlaceholderTextField" binding="txtEndTime">
                 <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="27"/>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="250" height="27"/>
                   </grid>
                 </constraints>
-                <properties>
-                  <text value="HH:MM"/>
-                </properties>
+                <properties/>
               </component>
             </children>
           </grid>

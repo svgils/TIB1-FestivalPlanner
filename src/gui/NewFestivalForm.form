@@ -110,7 +110,7 @@
               <component id="2906f" class="gui.PlaceholderTextField" binding="txtStartTime">
                 <constraints>
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="1" use-parent-layout="false">
-                    <preferred-size width="200" height="27"/>
+                    <preferred-size width="250" height="27"/>
                   </grid>
                 </constraints>
                 <properties/>
@@ -118,7 +118,7 @@
               <component id="7763e" class="gui.PlaceholderTextField" binding="txtEndTime">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="1" use-parent-layout="false">
-                    <preferred-size width="200" height="27"/>
+                    <preferred-size width="250" height="27"/>
                   </grid>
                 </constraints>
                 <properties/>

@@ -16,7 +16,7 @@ public class AgendaForm extends JFrame {
     private JPanel mainPanel;
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
-    private SchedulePainter schedulePainter;
+    public SchedulePainter schedulePainter;
 
     private JMenuBar menuBar;
     private JMenu menuFile;
