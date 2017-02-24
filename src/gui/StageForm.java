@@ -23,7 +23,7 @@ public class StageForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY));
+                    Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY, Main.festival.getStages().size() + 1));
                     Main.mp.schedulePainter.repaint();
                     StageForm.super.dispose();
                 } catch (Exception e1) {
