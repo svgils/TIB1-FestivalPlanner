@@ -22,14 +22,19 @@ public class StageForm extends JFrame{
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY));
-                Main.mp.schedulePainter.repaint();
-                StageForm.super.dispose();
+                try {
+                    Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY));
+                    Main.mp.schedulePainter.repaint();
+                    StageForm.super.dispose();
+                } catch (Exception e1) {
+                    JOptionPane.showMessageDialog(null, "Veld(en) niet juist ingevoerd");
+                }
             }
         });
 
         setContentPane(panel1);
         setVisible(true);
         pack();
+        setResizable(false);
     }
 }

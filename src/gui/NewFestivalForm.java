@@ -30,19 +30,24 @@ public class NewFestivalForm extends JFrame{
         btnCreate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.festival = new Festival(Integer.parseInt(txtCap.getText()),
-                                             Integer.parseInt(txtPrice.getText()),
-                                             datePicker.getModel().getValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                                             LocalTime.parse(txtStartTime.getText()),
-                                             LocalTime.parse(txtEndTime.getText()),
-                                             txtName.getText());
-                Main.mp.schedulePainter.repaint();
-                NewFestivalForm.super.dispose();
+                try {
+                    Main.festival = new Festival(Integer.parseInt(txtCap.getText()),
+                                                 Integer.parseInt(txtPrice.getText()),
+                                                 datePicker.getModel().getValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                                                 LocalTime.parse(txtStartTime.getText()),
+                                                 LocalTime.parse(txtEndTime.getText()),
+                                                 txtName.getText());
+                    Main.mp.schedulePainter.repaint();
+                    NewFestivalForm.super.dispose();
+                } catch (NumberFormatException e1) {
+                    JOptionPane.showMessageDialog(null, "Veld(en) niet juist ingevoerd");
+                }
             }
         });
 
         setContentPane(mainPanel);
         setVisible(true);
         pack();
+        setResizable(false);
     }
 }

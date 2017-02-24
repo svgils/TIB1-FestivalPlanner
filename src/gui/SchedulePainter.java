@@ -145,7 +145,6 @@ public class SchedulePainter extends JPanel {
                     AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING,
                     length, AgendaForm.V_SPACING - 10, 10, 10), p));
             g2d.setColor(new Color(130, 175, 255));
-            System.out.println(Main.festival.getStages().size());
             g2d.fillRoundRect(x, AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
             g2d.setColor(Color.black);
             g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (i) + 30 + AgendaForm.V_SPACING);
