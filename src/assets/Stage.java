@@ -7,10 +7,12 @@ package assets;
 public class Stage  {
     private String name;
     private String location;
+    private int index;
 
-    public Stage(String name, String location){
+    public Stage(String name, String location, int index){
         this.name = name;
         this.location = location;
+        this.index = index;
     }
 
     public String getName(){
@@ -25,4 +27,7 @@ public class Stage  {
         return name;
     }
 
+    public int getIndex() {
+        return this.index;
+    }
 }

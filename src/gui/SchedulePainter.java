@@ -134,42 +134,39 @@ public class SchedulePainter extends JPanel {
 //            //g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
 //
 //        }
-        ArrayList<Performance> performances = Main.festival.getPerformances();
-        for (int i = 0; i < performances.size(); i++) {
-            Performance p = performances.get(i);
-
+        for (Performance p : Main.festival.getPerformances()) {
             g2d.setClip(hSpacingFirst + 2, 0, this.getWidth() - hSpacingFirst, this.getHeight());
             int x = (int) getLineIndexFromTime(p.getBegin());
             int length = (int) getLineIndexFromTime(p.getEnd()) - (int) getLineIndexFromTime(p.getBegin());
             blocks.add(new Block(new RoundRectangle2D.Double(x,
-                    AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING,
+                    AgendaForm.V_SPACING * p.getStage().getIndex() + 5 + AgendaForm.V_SPACING,
                     length, AgendaForm.V_SPACING - 10, 10, 10), p));
             g2d.setColor(new Color(130, 175, 255));
-            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (i) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
+            g2d.fillRoundRect(x, AgendaForm.V_SPACING * (p.getStage().getIndex()) + 5 + AgendaForm.V_SPACING, length, AgendaForm.V_SPACING - 10, 10, 10);
             g2d.setColor(Color.black);
-            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * (i) + 30 + AgendaForm.V_SPACING);
+            g2d.drawString(p.getAtrist().getName(), x + 5, AgendaForm.V_SPACING * p.getStage().getIndex() + 30 + AgendaForm.V_SPACING);
             //g2d.fillRoundRect(x, AgendaForm.V_SPACING * (Main.festival.getStages().indexOf(p.getStage())) + 5, length, AgendaForm.V_SPACING - 10, 10, 10);
-
         }
 
-        //Drawing popup info
-        g2d.setClip(null);
-        if(drawInfoBox){
-            FontMetrics metrics = g.getFontMetrics(g.getFont());
-            String lines[] = performanceInfo.split("\\r?\\n");
-            int boxWidth = 0;
-            for(String s : lines){
-                if(g.getFontMetrics().stringWidth(s) > boxWidth){
-                    boxWidth = g.getFontMetrics().stringWidth(s);
+
+
+            //Drawing popup info
+            g2d.setClip(null);
+            if (drawInfoBox) {
+                FontMetrics metrics = g.getFontMetrics(g.getFont());
+                String lines[] = performanceInfo.split("\\r?\\n");
+                int boxWidth = 0;
+                for (String s : lines) {
+                    if (g.getFontMetrics().stringWidth(s) > boxWidth) {
+                        boxWidth = g.getFontMetrics().stringWidth(s);
+                    }
                 }
+                g.setColor(new Color(198, 206, 211));
+                g2d.fillRoundRect(infoBoxX, infoBoxY, boxWidth + 30, metrics.getHeight() * countLines(performanceInfo) + 30, 10, 10);
+                g.setColor(Color.black);
+                drawString(g, performanceInfo, infoBoxX + 15, infoBoxY + 10);
             }
-            g.setColor(new Color(198, 206, 211));
-            g2d.fillRoundRect(infoBoxX, infoBoxY, boxWidth + 30, metrics.getHeight() * countLines(performanceInfo) + 30, 10, 10);
-            g.setColor(Color.black);
-            drawString(g, performanceInfo, infoBoxX + 15, infoBoxY + 10);
         }
-    }
-
 
 
     private void drawString(Graphics g, String text, int x, int y) {
