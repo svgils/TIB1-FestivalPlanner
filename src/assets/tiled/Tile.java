@@ -9,7 +9,6 @@ public class Tile {
     private int width;
     private int height;
     private BufferedImage image;
-    private TileLayer layer;
 
     public Tile(int width, int height, BufferedImage tileImage)
     {
@@ -32,6 +31,4 @@ public class Tile {
     {
         return this.image;
     }
-
-    //public TileLayer getTileLayer() { return this.layer; }
 }

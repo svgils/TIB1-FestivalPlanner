@@ -1,12 +1,14 @@
 package assets.tiled;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created by Michel on 20-2-2017.
  */
 public class Tileset {
     private int columns;
     private int firstgid;
-    private String image;
+    private String imagePath;
     private int imageheight;
     private int imagewidth;
     private int margin;
@@ -17,6 +19,7 @@ public class Tileset {
     private int tileheight;
     //private Tiles tiles;
     private int tilewidth;
+    private BufferedImage tilesetImage;
 
     public int getColumns() { return this.columns; }
 
@@ -26,17 +29,17 @@ public class Tileset {
 
     public void setFirstgid(int firstgid) { this.firstgid = firstgid; }
 
-    public String getImage() { return this.image; }
+    public String getImagePath() { return this.imagePath; }
 
-    public void setImage(String image) { this.image = image; }
+    public void setImagePath(String image) { this.imagePath = image; }
 
-    public int getImageheight() { return this.imageheight; }
+    public int getImageHeight() { return this.imageheight; }
 
-    public void setImageheight(int imageheight) { this.imageheight = imageheight; }
+    public void setImageHeight(int imageheight) { this.imageheight = imageheight; }
 
-    public int getImagewidth() { return this.imagewidth; }
+    public int getImageWidth() { return this.imagewidth; }
 
-    public void setImagewidth(int imagewidth) { this.imagewidth = imagewidth; }
+    public void setImageWidth(int imagewidth) { this.imagewidth = imagewidth; }
 
     public int getMargin() { return this.margin; }
 
@@ -54,19 +57,27 @@ public class Tileset {
 
     //public void setTerrains(ArrayList<Terrain> terrains) { this.terrains = terrains; }
 
-    public int getTilecount() { return this.tilecount; }
+    public int getTileCount() { return this.tilecount; }
 
-    public void setTilecount(int tilecount) { this.tilecount = tilecount; }
+    public void setTileCount(int tilecount) { this.tilecount = tilecount; }
 
-    public int getTileheight() { return this.tileheight; }
+    public int getTileHeight() { return this.tileheight; }
 
-    public void setTileheight(int tileheight) { this.tileheight = tileheight; }
+    public void setTileHeight(int tileheight) { this.tileheight = tileheight; }
 
     //public Tiles getTiles() { return this.tiles; }
 
     //public void setTiles(Tiles tiles) { this.tiles = tiles; }
 
-    public int getTilewidth() { return this.tilewidth; }
+    public int getTileWidth() { return this.tilewidth; }
 
-    public void setTilewidth(int tilewidth) { this.tilewidth = tilewidth; }
+    public void setTileWidth(int tilewidth) { this.tilewidth = tilewidth; }
+
+    public BufferedImage getTilesetImage() {
+        return tilesetImage;
+    }
+
+    public void setTilesetImage(BufferedImage tilesetImage) {
+        this.tilesetImage = tilesetImage;
+    }
 }

@@ -5,6 +5,7 @@ import assets.tiled.TileMap;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Created by Michel on 20-2-2017.
@@ -29,7 +30,7 @@ public class MapViewer extends JPanel {
     }
 
     public MapViewer() {
-        this.map = new TileMap("./map.json");
+        this.map = new TileMap("./resources/festivalmap.json");
         this.camera = new Camera(this);
     }
 
@@ -41,49 +42,85 @@ public class MapViewer extends JPanel {
         this.drawGrid(g2d);
         this.drawCrosshair(g2d);
 
+        AffineTransform oldTransform = g2d.getTransform();
+
         // KEEP THIS ORDER - DO NOT EDIT UNLESS FUCKERY IS WANTED
         g2d.setTransform(this.camera.getTransform(getWidth(), getHeight()));
+
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
         // Camera transfom is needed for the map to draw and to keep correct ratio's
         this.map.draw(g2d);
 
+        g2d.setTransform(oldTransform);
+
         // Reset camera transform
-        g2d.scale(1 / this.camera.getZoom() , 1 / this.camera.getZoom());
-        g2d.translate(-(this.getWidth() / 2) - this.camera.getCenterPoint().getX() * this.camera.getZoom(), -(this.getHeight() / 2) - this.camera.getCenterPoint().getY() * this.camera.getZoom());
+        //   g2d.scale(1 / this.camera.getZoom() , 1 / this.camera.getZoom());
+         //  g2d.translate(-(this.getWidth() / 2) - this.camera.getCenterPoint().getX() * this.camera.getZoom(), -(this.getHeight() / 2) - this.camera.getCenterPoint().getY() * this.camera.getZoom());
         // Done resetting camera transform
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
 
         this.drawStats(g2d);
+
+        g2d.setColor(Color.blue);
+
+        // Top Vertical line
+        g2d.drawLine(this.getWidth() / 2, this.getHeight() / 2, this.getWidth() / 2, 0);
+
+        // Down Vertical line
+        g2d.drawLine(this.getWidth() / 2, this.getHeight() / 2, this.getWidth() / 2, this.getHeight());
+
+        // Left Horizontal line
+        g2d.drawLine(this.getWidth() / 2, this.getHeight() / 2, 0, this.getHeight() / 2);
+
+        // Right Horizontal line
+        g2d.drawLine(this.getWidth() / 2, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
     }
 
     private void drawStats(Graphics2D g2d)
     {
+        int statCount = 12;
+        int statHeight = 14;
+
+        g2d.setColor(Color.red);
+        g2d.fillOval((this.getWidth() / 2) + (int)(this.camera.getCenterPoint().getX() * this.camera.getZoom()) - 5, (this.getHeight() / 2) + (int)(this.camera.getCenterPoint().getY() * this.camera.getZoom()) - 5, 10,10);
+        g2d.setColor(Color.blue);
+        g2d.fillOval(this.getWidth() / 2 - 5, this.getHeight() / 2 - 5, 10,10);
         g2d.setColor(Color.gray);
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-        g2d.fillRect(0, 0, 300, 100);
+        g2d.fillRect(0, 0, 350, statCount * statHeight);
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
         g2d.setColor(Color.white);
-        g2d.translate(0, 12);
+        g2d.translate(0, statHeight);
         g2d.drawString("Zoom Factor: " + this.camera.getZoom(), 0, 0);
-        g2d.translate(0, 12);
+        g2d.translate(0, statHeight);
         g2d.drawString("Max Zoom:" + this.camera.getMaxZoom(), 0, 0);
-        g2d.translate(0, 12);
+        g2d.translate(0, statHeight);
         g2d.drawString("Min Zoom:" + this.camera.getMinZoom(), 0, 0);
-        g2d.translate(0, 12);
-        g2d.drawString("Center Point: X: " + (int)this.camera.getCenterPoint().getX() + "|Y: " + (int)this.camera.getCenterPoint().getY(), 0,0);
-        g2d.translate(0, 12);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Map Origin Point: X: " + (int)this.camera.getCenterPoint().getX() + "|Y: " + (int)this.camera.getCenterPoint().getY(), 0,0);
+        g2d.translate(0, statHeight);
         g2d.drawString("World Position: ", 0, 0);
-        g2d.translate(0, 12);
+        g2d.translate(0, statHeight);
         g2d.drawString("Mouse Point: X:" + (int)MouseInfo.getPointerInfo().getLocation().getX() + "|Y: " + (int)MouseInfo.getPointerInfo().getLocation().getY(), 0,0);
-        g2d.translate(0, 12);
-        g2d.drawString("Lines Vertical:" + this.linesV, 0, 0);
-        g2d.translate(0, 12);
-        g2d.drawString("Lines Horizontal:" + this.linesH, 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Grid Lines Vertical:" + this.linesV, 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Grid Lines Horizontal:" + this.linesH, 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Map Width:" + this.map.getWidth(), 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Map Height:" + this.map.getHeight(), 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Tile Width:" + this.map.getTileWidth(), 0, 0);
+        g2d.translate(0, statHeight);
+        g2d.drawString("Tile Height:" + this.map.getTileHeight(), 0, 0);
+        g2d.translate(0, -(statCount * statHeight));
     }
 
     private void drawCrosshair(Graphics2D g2d)
     {
-        g2d.setColor(Color.gray);
+        g2d.setColor(Color.red);
         int centerX = (int) ((this.getWidth() / 2) + (this.camera.getCenterPoint().getX() * this.camera.getZoom()));
         int centerY = (int) ((this.getHeight() / 2) + (this.camera.getCenterPoint().getY() * this.camera.getZoom()));
 
