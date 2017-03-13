@@ -22,11 +22,11 @@ public class Main {
 
     public static void main(String[] args){
         createTestFest();
-        try {
+        //try {
             mp = new AgendaForm();
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Velden niet juist ingevoerd");
-        }
+//        }catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, "Velden niet juist ingevoerd");
+//        }
     }
 
     public JFrame getMainPanel(){

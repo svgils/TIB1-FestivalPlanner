@@ -24,9 +24,10 @@ public class StageForm extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     Main.festival.addStage(new Stage(txtName.getText(), txtLocationX + "," + txtLocationY, Main.festival.getStages().size() + 1));
-                    Main.mp.schedulePainter.repaint();
+                    Main.mp.tabbedPane.getSelectedComponent().repaint();
                     StageForm.super.dispose();
-                } catch (Exception e1) {
+                    Main.mp.pack();
+                } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Veld(en) niet juist ingevoerd");
                 }
             }

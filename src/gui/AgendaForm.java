@@ -20,7 +20,7 @@ public class AgendaForm extends JFrame {
     private JPanel mainPanel;
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
-    private JTabbedPane tabbedPane;
+    public JTabbedPane tabbedPane;
     public SchedulePainter schedulePainter;
 
     private JMenuBar menuBar;
