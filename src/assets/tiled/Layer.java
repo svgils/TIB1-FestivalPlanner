@@ -9,7 +9,8 @@ import java.util.Objects;
 /**
  * Created by Michel on 20-2-2017.
  */
-public abstract class Layer extends TileObject implements Updatable, Drawable {
+
+public abstract class Layer  implements Updatable, Drawable {
     protected int width;
     protected int height;
     protected String name;
@@ -26,8 +27,8 @@ public abstract class Layer extends TileObject implements Updatable, Drawable {
 
     public Layer(JsonObject layer, TileMap map)
     {
-        super(layer, map);
-        
+        //super(layer, map);
+
         this.layerObject = layer;
         this.map = map;
 

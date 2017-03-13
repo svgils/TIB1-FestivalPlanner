@@ -16,12 +16,7 @@
             <constraints border-constraint="West"/>
             <properties/>
             <border type="none"/>
-            <children>
-              <component id="78db" class="gui.DatePicker">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
+            <children/>
           </grid>
         </children>
       </grid>

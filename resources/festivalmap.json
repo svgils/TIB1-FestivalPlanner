@@ -630,6 +630,7 @@
       "tilewidth":32
     },
     {
+<<<<<<< Updated upstream
       "columns":13,
       "firstgid":2722,
       "image":"..\/tiles\/wc.png",
@@ -657,6 +658,8 @@
       "transparentcolor":"#ffffff"
     },
     {
+=======
+>>>>>>> Stashed changes
       "columns":29,
       "firstgid":2892,
       "image":"..\/tiles\/Bruin.png",

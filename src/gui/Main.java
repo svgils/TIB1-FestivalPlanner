@@ -4,10 +4,8 @@ import assets.Artist;
 import assets.Festival;
 import assets.Performance;
 import assets.Stage;
-import gui.AgendaForm;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

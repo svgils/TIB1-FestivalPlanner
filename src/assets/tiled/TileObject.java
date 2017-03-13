@@ -5,6 +5,10 @@ import com.oracle.deploy.update.UpdateCheckListener;
 
 import javax.json.JsonObject;
 
+import javax.json.JsonValue;
+import java.util.Map;
+
+
 /**
  * Created by Michel on 13-3-2017.
  */
@@ -16,6 +20,8 @@ public class TileObject {
     protected boolean visible;
     protected int x;
     protected int y;
+
+    protected Map properties;
 
     private JsonObject layerObject;
     private TileMap map;
