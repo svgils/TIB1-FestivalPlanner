@@ -38,7 +38,7 @@ public class Visitor extends SimulationObject{
         this.destination = new Point2D.Double(0, 0);
 
         try {
-            this.image = ImageIO.read(this.getClass().getResourceAsStream("/characters/m_visitor.png"));
+            this.image = ImageIO.read(this.getClass().getResourceAsStream("/characters/m_visitor_32x32.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
