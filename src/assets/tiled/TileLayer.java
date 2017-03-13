@@ -82,6 +82,8 @@ public class TileLayer extends Layer {
             this.forceRedraw = false;
             this.image = createImage();
         }
+
+        g.drawImage(image, null, null);
     }
 
     @Override

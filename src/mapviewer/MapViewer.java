@@ -96,7 +96,14 @@ public class MapViewer extends JPanel implements ActionListener{
                 {
                     for(int i = 0; i < layerCheckboxes.length; i++) {
                         if (layerCheckboxes[i].isSelected() && !map.getLayers().get(i).getForceRedraw()) {
-                            map.getLayers().get(i).setOpacity(1.0);
+                            if(map.getLayers().get(i).getName().equals("Path"))
+                            {
+                                map.getLayers().get(i).setOpacity(0.4);
+                            }
+                            else
+                            {
+                                map.getLayers().get(i).setOpacity(1.0);
+                            }
                         } else {
                             map.getLayers().get(i).setOpacity(0.0);
                         }
@@ -123,7 +130,7 @@ public class MapViewer extends JPanel implements ActionListener{
 
         // Camera transfom is needed for the map to draw and to keep correct ratio's
         this.map.draw(g2d);
-        this.drawGrid(g2d);
+        //this.drawGrid(g2d);
 
         for(Visitor v : visitors)
             v.draw(g2d);
@@ -139,8 +146,8 @@ public class MapViewer extends JPanel implements ActionListener{
         //g2d.setTransform(oldTransform);
 
 
-        this.drawCrosshair(g2d);
-        this.drawStats(g2d);
+        //this.drawCrosshair(g2d);
+        //this.drawStats(g2d);
     }
 
     private void drawStats(Graphics2D g2d)

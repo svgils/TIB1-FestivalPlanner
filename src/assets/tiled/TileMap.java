@@ -140,7 +140,6 @@ public class TileMap implements Updatable, Drawable
         for (Layer l : this.layers) {
             l.draw(g2);
         }
-
     }
 
     public BufferedImage[] getTiles() {
