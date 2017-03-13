@@ -1,5 +1,9 @@
 package assets.tiled;
 
+import assets.simulation.Drawable;
+import assets.simulation.Updatable;
+import mapviewer.MapViewer;
+
 import javax.imageio.ImageIO;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -8,24 +12,22 @@ import javax.json.JsonReader;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
 /**
  * Created by Michel on 20-2-2017.
  */
-public class TileMap {
-
-
-
-    private ArrayList<Tileset> tilesets = new ArrayList<>();
-    private ArrayList<TileLayer> layers = new ArrayList();
+public class TileMap implements Updatable, Drawable
+{
+    private ArrayList<Tileset> tilesets = new ArrayList();
+    private ArrayList<Layer> layers = new ArrayList();
     private ArrayList<BufferedImage> tiles = new ArrayList();
+
+    private ArrayList<Point2D> startAndEndPoints = new ArrayList();
 
     private int width;
     private int height;
@@ -34,9 +36,8 @@ public class TileMap {
     private int tileWidth;
     private int tileHeight;
     private int version;
-    private  String renderOrder;
-    private int rows;
-    private int columns;
+    private String renderOrder;
+    //private String backgroundColor;
 
     public TileMap(String resourcePath)
     {
@@ -53,6 +54,7 @@ public class TileMap {
             this.tileWidth = o.getInt("tilewidth");
             this.tileHeight = o.getInt("tileheight");
             this.version = o.getInt("version");
+            //this.backgroundColor = o.getString("backgroundcolor");
 
             // Parse tilesets
             JsonArray tilesetsArray = o.getJsonArray("tilesets");
@@ -86,7 +88,6 @@ public class TileMap {
                     this.tiles.add(null);
                 }
 
-                System.out.println("#"+t+" | Parse Tiles");
                 // Parse tiles
                 // TODO: Add comments regarding what this code does
                 for (int y = 0; y + tileset.getTileHeight() <= tileset.getImageHeight(); y += tileset.getTileHeight()) {
@@ -102,69 +103,44 @@ public class TileMap {
             // TODO: Add comments regarding what this code does
             JsonArray jsonLayers = o.getJsonArray("layers");
             for (int i = 0; i < jsonLayers.size(); i++) {
-                TileLayer layer = new TileLayer(jsonLayers.getJsonObject(i), this);
-                if(jsonLayers.getJsonObject(i).getString("name").equals("Path"))
-                    continue;
-                this.layers.add(layer);
+                Layer layer = null;
+
+                JsonObject jsonObject = jsonLayers.getJsonObject(i);
+                String type = jsonObject.getString("type");
+                switch(type)
+                {
+                    case "tilelayer":
+                        layer = new TileLayer(jsonObject, this);
+                        break;
+                    case "objectgroup":
+                        layer = new ObjectLayer(jsonObject, this);
+                        break;
+                    case "imagelayer":
+                        layer = new ImageLayer(jsonObject, this);
+                        break;
+                }
+
+                if(layer != null)
+                    this.layers.add(layer);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
-//        JsonReader reader = null;
-//        try {
-//            reader = Json.createReader(new FileReader(resourcePath));
-//            JsonObject o = (JsonObject) reader.read();
-//
-//            this.height = o.getInt("height");
-//            this.width = o.getInt("width");
-//
-//            JsonArray tilesets = o.getJsonArray("tilesets");
-//
-//            for (int i = 0; i < tilesets.size(); i++) {
-//                JsonObject tileset = tilesets.getJsonObject(i);
-//                String tileFile = tileset.getString("image");
-//                tileFile = tileFile.replaceAll("\\.\\./", "/");
-//                BufferedImage img = ImageIO.read(getClass().getResource(tileFile));
-//
-//                int tilesetWidth = tileset.getInt("imagewidth");
-//                int tilesetHeight = tileset.getInt("imageheight");
-//                int tileWidth = tileset.getInt("tilewidth");
-//                int tileHeight = tileset.getInt("tileheight");
-//
-//                int index = tileset.getInt("firstgid");
-//                while (this.tiles.size() < index + tileset.getInt("tilecount")) {
-//                    this.tiles.add(null);
-//                }
-//
-//                for (int y = 0; y + tileHeight <= tilesetHeight; y += tileHeight) {
-//                    for (int x = 0; x + tileWidth <= tilesetWidth; x += tileWidth) {
-//                        this.tiles.set(index, img.getSubimage(x, y, tileWidth, tileHeight));
-//                        index++;
-//                    }
-//                }
-//            }
-//
-//            JsonArray jsonLayers = o.getJsonArray("layers");
-//            for (int i = 0; i < jsonLayers.size(); i++) {
-//                JsonObject layer = jsonLayers.getJsonObject(i);
-//                if(layer.getString("name").equals("Signs"))
-//                    continue;
-//                this.layers.add(new TileLayer(jsonLayers.getJsonObject(i), this));
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }printStackTrace
     }
 
-    public void draw(Graphics2D g2) {
-        for (TileLayer l : this.layers) {
-            g2.drawImage(l.getImage(), null, null);
+    @Override
+    public void update() {
+        for (Layer l : this.layers) {
+            l.update();
         }
+    }
+
+    @Override
+    public void draw(Graphics2D g2) {
+        for (Layer l : this.layers) {
+            l.draw(g2);
+        }
+
     }
 
     public BufferedImage[] getTiles() {
@@ -187,5 +163,10 @@ public class TileMap {
 
     public int getTileHeight() {
         return tileHeight;
+    }
+
+    public ArrayList<Layer> getLayers()
+    {
+        return this.layers;
     }
 }
