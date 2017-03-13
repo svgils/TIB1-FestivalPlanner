@@ -2,9 +2,9 @@ package mapviewer;
 
 import assets.Visitor;
 import assets.mapviewer.Camera;
-import assets.simulation.Updatable;
-import assets.tiled.Layer;
+import assets.tiled.ObjectLayer;
 import assets.tiled.TileMap;
+import assets.tiled.TileObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +13,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Created by Michel on 20-2-2017.
  */
-public class MapViewer extends JPanel implements ActionListener{
+public class MapViewer extends JPanel implements ActionListener {
     private TileMap map;
     public Camera camera;
 
@@ -29,12 +31,16 @@ public class MapViewer extends JPanel implements ActionListener{
 
     private Random rng = new Random();
 
-    public  ArrayList<Visitor> visitors;
+    public ArrayList<Visitor> visitors;
 
     JCheckBox[] layerCheckboxes;
 
-    public static void main(String[] args)
-    {
+    List<TileObject> spawnTargets = null;
+    List<TileObject> exitTargets;
+    List<TileObject> toiletTargets;
+    List<TileObject> shopTargets;
+
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Map Viewer");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(800, 600));
@@ -50,19 +56,22 @@ public class MapViewer extends JPanel implements ActionListener{
         this.map = new TileMap("./resources/maps/festivalmap.json");
         this.camera = new Camera(this);
 
+        this.loadTargets();
+
         this.visitors = new ArrayList<>();
 
         int max = this.map.getWidth() * this.map.getTileWidth() - this.map.getTileWidth();
         int min = this.map.getTileWidth();
         int range = max - min + 1;
 
-        while(visitors.size() < 2)
-        {
+        while (visitors.size() < 1) {
+
+
             Point2D newPosition = new Point2D.Double(
-                    rng.nextInt(range) + min,
-                    rng.nextInt(range) + min
+                    spawnTargets.get(0).getX() + 16,
+                    spawnTargets.get(0).getY() + 16
             );
-            //if(canSpawn(newPosition))
+            if (canSpawn(newPosition))
                 visitors.add(new Visitor("Henk", "m", newPosition));
         }
 
@@ -73,7 +82,7 @@ public class MapViewer extends JPanel implements ActionListener{
 
                 try {
                     Point2D worldMousePosition = cameraTransform.inverseTransform(e.getPoint(), null);
-                    for(Visitor v : visitors)
+                    for (Visitor v : visitors)
                         v.destination = worldMousePosition;
 
 
@@ -85,23 +94,17 @@ public class MapViewer extends JPanel implements ActionListener{
 
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
-        for(int i = 0; i < this.map.getLayers().size(); i++)
-        {
+        for (int i = 0; i < this.map.getLayers().size(); i++) {
             boolean isSelected = this.map.getLayers().get(i).getOpacity() > 0 ? true : false;
             add(this.layerCheckboxes[i] = new JCheckBox(this.map.getLayers().get(i).getName(), isSelected));
             int finalI = i;
-            this.layerCheckboxes[i].addItemListener(new ItemListener()
-            {
-                public void itemStateChanged(ItemEvent e)
-                {
-                    for(int i = 0; i < layerCheckboxes.length; i++) {
+            this.layerCheckboxes[i].addItemListener(new ItemListener() {
+                public void itemStateChanged(ItemEvent e) {
+                    for (int i = 0; i < layerCheckboxes.length; i++) {
                         if (layerCheckboxes[i].isSelected() && !map.getLayers().get(i).getForceRedraw()) {
-                            if(map.getLayers().get(i).getName().equals("Path"))
-                            {
+                            if (map.getLayers().get(i).getName().equals("Path")) {
                                 map.getLayers().get(i).setOpacity(0.4);
-                            }
-                            else
-                            {
+                            } else {
                                 map.getLayers().get(i).setOpacity(1.0);
                             }
                         } else {
@@ -112,12 +115,11 @@ public class MapViewer extends JPanel implements ActionListener{
             });
         }
 
-        new Timer(1000/60,this).start();
+        new Timer(1000 / 60, this).start();
 
     }
 
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
@@ -132,22 +134,89 @@ public class MapViewer extends JPanel implements ActionListener{
         this.map.draw(g2d);
         //this.drawGrid(g2d);
 
-        for(Visitor v : visitors)
+        for (Visitor v : visitors)
             v.draw(g2d);
 
+        this.numberedGrid(g2d);
 
         g2d.setTransform(oldTransform);
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
 
 
-
-
-        //g2d.setTransform(this.camera.getTransform(getWidth(), getHeight()));
-        //g2d.setTransform(oldTransform);
-
-
         //this.drawCrosshair(g2d);
         //this.drawStats(g2d);
+    }
+
+    private void loadTargets()
+    {
+        ObjectLayer targetLayer = (ObjectLayer) this.map.getLayers().get(1);
+
+        spawnTargets = targetLayer.getTileObjects()
+                .stream()
+                .filter(to -> to.getName().equals("Entrance"))
+                .collect(Collectors.toList());
+
+        exitTargets = targetLayer.getTileObjects()
+                .stream()
+                .filter(to -> to.getName().equals("Exit"))
+                .collect(Collectors.toList());
+
+        toiletTargets = targetLayer.getTileObjects()
+                .stream()
+                .filter(to -> to.getName().equals("Shitbowl"))
+                .collect(Collectors.toList());
+
+        shopTargets = targetLayer.getTileObjects()
+                .stream()
+                .filter(to -> to.getName().equals("Shop"))
+                .collect(Collectors.toList());
+    }
+
+    private void numberedGrid(Graphics2D g2d)
+    {
+        int stepSize = 32;
+
+        g2d.setColor(Color.lightGray);
+
+        int centerX = (int) (this.camera.getCenterPoint().getX());
+        int centerY = (int) (this.camera.getCenterPoint().getY());
+
+        centerX = 32*(centerX/32);
+        centerY = 32*(centerY/32);
+
+        // Draw rows
+        for(int y = 0; y < this.map.getWidth(); y+=1)
+        {
+            g2d.setColor(Color.lightGray);
+            g2d.drawLine(0, y * stepSize, this.map.getWidth() * stepSize, y * stepSize);
+
+            // Draw columns
+            for(int x = 0; x < this.map.getHeight(); x+=1)
+            {
+                g2d.drawLine(x * stepSize, 0,x * stepSize, this.map.getHeight() * stepSize);
+
+                g2d.setColor(Color.white);
+                g2d.drawString("["+x+","+y+"]", x * stepSize, y * stepSize + g2d.getFontMetrics().getHeight());
+                g2d.setColor(Color.lightGray);
+            }
+        }
+
+
+
+//        // Draw rows
+//        for(int y = 0; y < this.map.getWidth() + 1; y+=1)
+//        {
+//
+//
+//            g2d.drawLine(0, y * stepSize, this.map.getWidth() * stepSize, y * stepSize);
+//        }
+//
+//        // Draw columns
+//        for(int x = 0; x < this.map.getHeight() + 1; x+=1)
+//        {
+//            g2d.drawLine(x * stepSize, 0,x * stepSize, this.map.getHeight() * stepSize);
+//        }
+
     }
 
     private void drawStats(Graphics2D g2d)
@@ -279,7 +348,7 @@ public class MapViewer extends JPanel implements ActionListener{
 
 
         for(Visitor v : visitors)
-            v.update();
+           // v.update();
 
         repaint();
     }

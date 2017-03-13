@@ -92,7 +92,7 @@ public class TileMap implements Updatable, Drawable
                 // TODO: Add comments regarding what this code does
                 for (int y = 0; y + tileset.getTileHeight() <= tileset.getImageHeight(); y += tileset.getTileHeight()) {
                     for (int x = 0; x + tileset.getTileWidth() <= tileset.getImageWidth(); x += tileset.getTileWidth()) {
-                        Tile tile = new Tile(tileset.getTileWidth(), tileset.getTileHeight(), tileset.getTilesetImage().getSubimage(x, y, tileset.getTileWidth(), tileset.getTileHeight()));
+                        Tile tile = new Tile(tileset.getTileWidth(), tileset.getTileHeight(), tileset.getTilesetImage().getSubimage(x, y, tileset.getTileWidth(), tileset.getTileHeight()), x, y);
                         this.tiles.set(index, tile.getTileImage());
                         index++;
                     }

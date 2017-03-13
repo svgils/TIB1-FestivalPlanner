@@ -1,9 +1,6 @@
 package assets;
 
-import assets.simulation.Drawable;
 import assets.simulation.SimulationObject;
-import assets.simulation.Updatable;
-import mapviewer.MapViewer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -11,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Bob, Bram en Michel on 6-2-2017.

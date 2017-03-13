@@ -6,8 +6,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
-        * Created by Michel on 20-2-2017.
-        */
+* Created by Michel on 20-2-2017.
+*/
 public class TileLayer extends Layer {
     private int[][] data;
     private int height;
@@ -46,10 +46,10 @@ public class TileLayer extends Layer {
     }
 
     /**
-            * Create a new instance of the TileLayer
+     * Create a new instance of the TileLayer
      * Uses predefined tile width/height of 32 pixels/32 pixels
      *
-             * @param object
+     * @param object
      * @param map
      */
     public TileLayer(JsonObject object, TileMap map)

@@ -9,8 +9,10 @@ public class Tile {
     private int width;
     private int height;
     private BufferedImage image;
+    private int x;
+    private int y;
 
-    public Tile(int width, int height, BufferedImage tileImage)
+    public Tile(int width, int height, BufferedImage tileImage, int worldX, int worldY)
     {
         this.width = width;
         this.height = height;
