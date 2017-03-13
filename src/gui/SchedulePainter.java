@@ -28,8 +28,27 @@ public class SchedulePainter extends JPanel {
     String performanceInfo;
     boolean drawInfoBox = false;
 
+    JScrollBar scrollHorz;
+    //JScrollBar scrollVert;
+
     public SchedulePainter(){
-        super();
+        super(new BorderLayout());
+
+
+        scrollHorz = new JScrollBar();
+        //scrollVert = new JScrollBar();
+
+        scrollHorz.setOrientation(Adjustable.HORIZONTAL);
+
+        //Scrollbar stuff
+        scrollHorz.addAdjustmentListener(e -> {
+            createVertLines(49, ((double)e.getValue()/90));
+            repaint();
+        });
+
+        //add(scrollVert, BorderLayout.EAST);
+        add(scrollHorz, BorderLayout.SOUTH);
+
         setBackground(Color.WHITE);
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
@@ -56,8 +75,6 @@ public class SchedulePainter extends JPanel {
         });
 
     }
-
-    //private
 
     @Override
     protected void paintComponent(Graphics g) {

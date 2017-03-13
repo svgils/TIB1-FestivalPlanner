@@ -1,8 +1,12 @@
 package gui;
 
 import assets.Festival;
+import assets.tiled.TileMap;
+import mapviewer.MapViewer;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -16,6 +20,7 @@ public class AgendaForm extends JFrame {
     private JPanel mainPanel;
     private JScrollBar scrollBar1;
     private JScrollBar scrollBar2;
+    private JTabbedPane tabbedPane;
     public SchedulePainter schedulePainter;
 
     private JMenuBar menuBar;
@@ -37,18 +42,23 @@ public class AgendaForm extends JFrame {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        tabbedPane.addTab("Agenda", new SchedulePainter());
+        tabbedPane.addTab("Simulation", new MapViewer());
+
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainPanel.setPreferredSize(new Dimension(screensize.width, 70 + V_SPACING * Main.festival.getStages().size() + V_SPACING));
+        mainPanel.setPreferredSize(new Dimension(screensize.width, 85 + tabbedPane.getBoundsAt(1).height + V_SPACING * Main.festival.getStages().size() + V_SPACING));
 
-
-        //Scrollbar stuff
-        scrollBar2.addAdjustmentListener(e -> {
-            schedulePainter.createVertLines(49, ((double)e.getValue()/90));
-            schedulePainter.repaint();
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(tabbedPane.getSelectedComponent() instanceof MapViewer){
+                    Main.mp.setExtendedState(MAXIMIZED_BOTH);
+                }
+                if(tabbedPane.getSelectedComponent() instanceof SchedulePainter){
+                    Main.mp.pack();
+                }
+            }
         });
-        scrollBar1.setVisibleAmount(100);
-        scrollBar1.addAdjustmentListener(e -> scrollBar1Pos = e.getValue());
-
 
         //Menu stuff
         menuBar = new JMenuBar();
