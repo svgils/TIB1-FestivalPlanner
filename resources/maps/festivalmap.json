@@ -630,19 +630,6 @@
       "tilewidth":32
     },
     {
-      "columns":13,
-      "firstgid":2722,
-      "image":"..\/tiles\/wc.png",
-      "imageheight":424,
-      "imagewidth":424,
-      "margin":0,
-      "name":"wc",
-      "spacing":0,
-      "tilecount":169,
-      "tileheight":32,
-      "tilewidth":32
-    },
-    {
       "columns":1,
       "firstgid":2891,
       "image":"..\/tiles\/schijtbak32px.png",

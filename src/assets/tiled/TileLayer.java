@@ -19,6 +19,8 @@ public class TileLayer extends Layer {
 
     public TileLayer(JsonObject layer, TileMap map, int tileWidth, int tileHeight)
     {
+        super(layer, map);
+
         this.map = map;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
@@ -59,6 +61,7 @@ public class TileLayer extends Layer {
     {
         BufferedImage img = new BufferedImage(this.tileWidth * this.width, this.tileHeight * this.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = img.createGraphics();
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) this.opacity));
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
                 g2.drawImage(this.map.getTiles()[this.data[y][x]], x * this.tileWidth, y * this.tileHeight, null);
@@ -70,5 +73,19 @@ public class TileLayer extends Layer {
     public BufferedImage getImage()
     {
         return this.image;
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        if(this.forceRedraw)
+        {
+            this.forceRedraw = false;
+            this.image = createImage();
+        }
+    }
+
+    @Override
+    public void update() {
+
     }
 }
