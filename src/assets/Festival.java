@@ -15,9 +15,9 @@ import java.util.*;
 
 public class Festival implements Serializable {
     private int visitorAmount;
-    private int price;  // prijs in Euro's
-    private LocalTime end;    // In uur
-    private LocalTime start;  // In Uur
+    private int price;  // price in Euro's
+    private LocalTime end;    // In hours
+    private LocalTime start;  // In hours
     private String name;
     private LocalDate day;
     private ArrayList<Artist> artists;

@@ -39,7 +39,6 @@ public class MapViewer extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        this.drawGrid(g2d);
         this.drawCrosshair(g2d);
 
         AffineTransform oldTransform = g2d.getTransform();
@@ -59,6 +58,9 @@ public class MapViewer extends JPanel {
          //  g2d.translate(-(this.getWidth() / 2) - this.camera.getCenterPoint().getX() * this.camera.getZoom(), -(this.getHeight() / 2) - this.camera.getCenterPoint().getY() * this.camera.getZoom());
         // Done resetting camera transform
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
+
+        this.drawGrid(g2d);
+
 
         this.drawStats(g2d);
 
