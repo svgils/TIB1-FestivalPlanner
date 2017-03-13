@@ -29,7 +29,7 @@ public class Festival implements Serializable {
 
     public Festival()
     {
-        this(0, 0, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE), LocalTime.parse("06:00"), LocalTime.parse("23:00"), "fest");
+        this(0, 0, LocalDate.parse("2017-05-23", DateTimeFormatter.ISO_DATE), LocalTime.parse("06:00"), LocalTime.parse("23:00"), "festival");
     }
 
     public Festival(int visitorAmount, int price, LocalDate day, LocalTime start, LocalTime end, String name) {
