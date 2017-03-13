@@ -35,9 +35,9 @@ public class PerformanceForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Main.festival.addPerformance(new Performance(new Artist(txtArtist.getText(), "", 1), (Stage)cboxStage.getSelectedItem(), LocalTime.parse(txtStartTime.getText()), LocalTime.parse(txtEndTime.getText())));
-                    Main.mp.schedulePainter.repaint();
+                    Main.mp.tabbedPane.getSelectedComponent().repaint();
                     PerformanceForm.super.dispose();
-                } catch (Exception e1) {
+                } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Veld(en) niet juist ingevoerd");
                 }
             }

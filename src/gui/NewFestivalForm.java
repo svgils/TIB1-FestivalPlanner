@@ -37,7 +37,7 @@ public class NewFestivalForm extends JFrame{
                                                  LocalTime.parse(txtStartTime.getText()),
                                                  LocalTime.parse(txtEndTime.getText()),
                                                  txtName.getText());
-                    Main.mp.schedulePainter.repaint();
+                    Main.mp.tabbedPane.getSelectedComponent().repaint();
                     NewFestivalForm.super.dispose();
                 } catch (NumberFormatException e1) {
                     JOptionPane.showMessageDialog(null, "Veld(en) niet juist ingevoerd");
