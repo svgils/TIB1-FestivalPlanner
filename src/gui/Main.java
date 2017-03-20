@@ -20,7 +20,7 @@ public class Main {
     public static AgendaForm mp;
     public static Festival festival;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         createTestFest();
         //try {
             mp = new AgendaForm();

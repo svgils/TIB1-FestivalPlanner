@@ -1,5 +1,6 @@
 package assets.tiled;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -12,11 +13,14 @@ public class Tile {
     private int x;
     private int y;
 
-    public Tile(int width, int height, BufferedImage tileImage, int worldX, int worldY)
+
+    public Tile(int width, int height, BufferedImage tileImage, int x, int y)
     {
         this.width = width;
         this.height = height;
         this.image = tileImage;
+        this.x = x;
+        this.y = x;
     }
 
     public int getWidth()
@@ -32,5 +36,10 @@ public class Tile {
     public BufferedImage getTileImage()
     {
         return this.image;
+    }
+
+    public Point2D getCenterPoint()
+    {
+        return new Point2D.Double(x + (width / 2), y + (height / 2));
     }
 }

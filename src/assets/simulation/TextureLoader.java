@@ -1,5 +1,8 @@
 package assets.simulation;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -10,25 +13,32 @@ public class TextureLoader {
     Simplified version of https://github.com/WhiteHexagon/example-lwjgl3-rift/blob/master/src/main/java/com/sunshineapps/riftexample/thirdparty/TextureLoader.java
     Just the needed parts are extracted.
      */
-    private static ArrayList<Texture> textures = new ArrayList();
+    private ArrayList<Texture> textures = new ArrayList();
 
-    public static boolean LoadTextures(String texturePath)
-    {
-        //ImageIO.read(new FileReader(texturePath));
-        return false;
+    public boolean LoadTexture(String textureName, String texturePath) throws IOException {
+        Texture texture = new Texture(textureName, ImageIO.read(this.getClass().getResourceAsStream(texturePath)));
+
+        return textures.add(texture);
     }
 
-    public static Texture getTexture(String textureName)
+    public Texture getTexture(String textureName)
     {
-        Texture texture = null;
-
         for (Texture t : textures) {
-            if (t != null && t.getName() == textureName) {
-                texture = t;
-                break;
+            if (t != null && t.getName().equals(textureName)) {
+                return t;
             }
         }
 
-        return texture;
+        return null;
+    }
+
+    public Texture getTexture(int index)
+    {
+        return textures.get(index);
+    }
+
+    public ArrayList<Texture> getTextures()
+    {
+        return textures;
     }
 }

@@ -38,7 +38,7 @@ public class AgendaForm extends JFrame {
     static int scrollBar1Pos;
     static int scrollBar2Pos;
 
-    public AgendaForm() {
+    public AgendaForm() throws IOException {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

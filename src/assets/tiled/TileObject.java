@@ -1,14 +1,16 @@
 package assets.tiled;
 
-import assets.simulation.SimulationObject;
-import com.oracle.deploy.update.UpdateCheckListener;
+import assets.simulation.Drawable;
+import assets.simulation.Updatable;
 
 import javax.json.JsonObject;
+import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * Created by Michel on 13-3-2017.
  */
-public class TileObject {
+public class TileObject implements Updatable, Drawable {
     private int id;
     private int width;
     private int height;
@@ -20,8 +22,6 @@ public class TileObject {
 
     private JsonObject layerObject;
     private TileMap map;
-
-    private boolean forceRedraw;
 
     public TileObject(JsonObject layer, TileMap map) {
         this.layerObject = layer;
@@ -98,5 +98,20 @@ public class TileObject {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Point2D getCenterPoint()
+    {
+        return new Point2D.Double(x + (width / 2), y + (height / 2));
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 }

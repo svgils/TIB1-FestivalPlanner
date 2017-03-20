@@ -19,7 +19,6 @@ public class ObjectLayer extends Layer {
         this.tileObjects = new ArrayList<>();
 
         JsonArray array = layer.getJsonArray("objects");
-        System.out.println(array);
 
         for(int i = 0; i < array.size(); i++)
         {
@@ -39,11 +38,25 @@ public class ObjectLayer extends Layer {
 
     @Override
     public void draw(Graphics2D g) {
+        if(tileObjects != null && tileObjects.size() > 0)
+        {
+            for(TileObject to : tileObjects)
+            {
+                to.draw(g);
+            }
+        }
 
     }
 
     @Override
     public void update() {
+        if(tileObjects != null && tileObjects.size() > 0)
+        {
+            for(TileObject to : tileObjects)
+            {
+                to.update();
+            }
+        }
 
     }
 

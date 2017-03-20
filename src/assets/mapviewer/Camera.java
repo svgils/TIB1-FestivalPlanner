@@ -64,7 +64,9 @@ public class Camera implements MouseListener, MouseMotionListener, MouseWheelLis
     {
         if (SwingUtilities.isMiddleMouseButton(e) || SwingUtilities.isLeftMouseButton(e))
         {
-            this.centerPoint = new Point2D.Double(this.centerPoint.getX() - (this.lastMousePos.getX() - e.getX()) / this.zoom, this.centerPoint.getY() - (this.lastMousePos.getY() - e.getY()) / this.zoom);
+            this.centerPoint = new Point2D.Double(
+                    this.centerPoint.getX() - (this.lastMousePos.getX() - e.getX()) / this.zoom,
+                    this.centerPoint.getY() - (this.lastMousePos.getY() - e.getY()) / this.zoom);
 
             this.lastMousePos = e.getPoint();
 

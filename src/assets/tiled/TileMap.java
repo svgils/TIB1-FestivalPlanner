@@ -41,7 +41,7 @@ public class TileMap implements Updatable, Drawable
 
     public TileMap(String resourcePath)
     {
-        try(JsonReader reader = Json.createReader(new FileReader(resourcePath)))
+        try(JsonReader reader = Json.createReader(getClass().getResourceAsStream(resourcePath)))
         {
             JsonObject o = (JsonObject)reader.read();
 

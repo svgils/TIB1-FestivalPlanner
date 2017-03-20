@@ -33,11 +33,11 @@ public class TileLayer extends Layer {
         this.data = new int[this.height][this.width];
 
         int i = 0;
-        for(int y = 0; y < this.height; y++)
+        for(int x = 0; x < this.width; x++)
         {
-            for(int x = 0; x < this.width; x++)
+            for(int y = 0; y < this.height; y++)
             {
-                this.data[y][x] = array.getInt(i);
+                this.data[x][y] = array.getInt(i);
                 i++;
             }
         }
@@ -75,6 +75,21 @@ public class TileLayer extends Layer {
         return this.image;
     }
 
+    public int[][] getData()
+    {
+        return this.data;
+    }
+
+    public int getHeight()
+    {
+        return this.height;
+    }
+
+    public int getWidth()
+    {
+        return this.width;
+    }
+
     @Override
     public void draw(Graphics2D g) {
         if(this.forceRedraw)
@@ -89,5 +104,17 @@ public class TileLayer extends Layer {
     @Override
     public void update() {
 
+    }
+
+    public boolean hasCollision(int x, int y)
+    {
+        return !(this.getData()[y][x] == 257 // Green
+               || this.getData()[y][x] == 258 // Green
+               || this.getData()[y][x] == 286 // Green
+               || this.getData()[y][x] == 287 // Green
+               || this.getData()[y][x] == 514 // Green
+               || this.getData()[y][x] == 1273 // Blue
+               || this.getData()[y][x] == 1301 // Blue
+               || this.getData()[y][x] == 1302); // Blue
     }
 }

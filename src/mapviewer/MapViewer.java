@@ -2,19 +2,20 @@ package mapviewer;
 
 import assets.Visitor;
 import assets.mapviewer.Camera;
-import assets.tiled.ObjectLayer;
-import assets.tiled.TileMap;
-import assets.tiled.TileObject;
+import assets.mapviewer.Overlay;
+import assets.simulation.TextureLoader;
+import assets.tiled.*;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -29,68 +30,89 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
-    private Random rng = new Random();
-
     public ArrayList<Visitor> visitors;
 
     JCheckBox[] layerCheckboxes;
 
     List<TileObject> spawnTargets = null;
-    List<TileObject> exitTargets;
-    List<TileObject> toiletTargets;
-    List<TileObject> shopTargets;
+    List<TileObject> exitTargets = null;
+    List<TileObject> toiletTargets = null;
+    List<TileObject> shopTargets = null;
+
+    TextureLoader tl = new TextureLoader();
+
+    int[][]overlay = null;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Map Viewer");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(800, 600));
-        frame.setMinimumSize(new Dimension(800, 600));
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH | JFrame.NORMAL);
-        frame.setContentPane(new MapViewer());
-        frame.pack();
-        frame.setVisible(true);
+        try
+        {
+            JFrame frame = new JFrame("Map Viewer");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setPreferredSize(new Dimension(800, 600));
+            frame.setMinimumSize(new Dimension(800, 600));
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH | JFrame.NORMAL);
+            frame.setContentPane(new MapViewer());
+            frame.pack();
+            frame.setVisible(true);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public MapViewer() {
+    public MapViewer() throws IOException {
 
-        this.map = new TileMap("./resources/maps/festivalmap.json");
+        this.map = new TileMap("/maps/festivalmap.json");
         this.camera = new Camera(this);
+
+        tl.LoadTexture("m_visitor_32x32", "/characters/m_visitor_32x32.png");
 
         this.loadTargets();
 
         this.visitors = new ArrayList<>();
 
-        int max = this.map.getWidth() * this.map.getTileWidth() - this.map.getTileWidth();
-        int min = this.map.getTileWidth();
-        int range = max - min + 1;
+        Random rng = new Random();
 
-        while (visitors.size() < 1) {
+        Overlay test = new Overlay(map);
+        overlay = test.generateOverlay(15, 12);
 
+        while (visitors.size() < 10) {
+            int max = test.getData().length - 10;
+
+            int x = rng.nextInt(max);
+            int y = rng.nextInt(max);
+
+            while(!(test.getData()[x][y] > 10 && 10 < test.getData()[max][max]))
+            {
+                x = rng.nextInt(max);
+                y = rng.nextInt(max);
+            }
 
             Point2D newPosition = new Point2D.Double(
-                    spawnTargets.get(0).getX() + 16,
-                    spawnTargets.get(0).getY() + 16
+                    x * 32,
+                    y * 32
             );
-            if (canSpawn(newPosition))
-                visitors.add(new Visitor("Henk", "m", newPosition));
+            //if (canSpawn(newPosition))
+                visitors.add(new Visitor("Henk", "m", newPosition, tl.getTexture(0), test));
         }
 
-        addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                AffineTransform cameraTransform = camera.getTransform(getWidth(), getHeight());
-
-                try {
-                    Point2D worldMousePosition = cameraTransform.inverseTransform(e.getPoint(), null);
-                    for (Visitor v : visitors)
-                        v.destination = worldMousePosition;
-
-
-                } catch (NoninvertibleTransformException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+//        addMouseMotionListener(new MouseMotionAdapter() {
+//            @Override
+//            public void mouseMoved(MouseEvent e) {
+//                AffineTransform cameraTransform = camera.getTransform(getWidth(), getHeight());
+//
+//                try {
+//                    Point2D worldMousePosition = cameraTransform.inverseTransform(e.getPoint(), null);
+//                    for (Visitor v : visitors)
+//                        v.destination = worldMousePosition;
+//
+//
+//                } catch (NoninvertibleTransformException e1) {
+//                    e1.printStackTrace();
+//                }
+//            }
+//        });
 
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
@@ -116,7 +138,6 @@ public class MapViewer extends JPanel implements ActionListener {
         }
 
         new Timer(1000 / 60, this).start();
-
     }
 
     public void paintComponent(Graphics g) {
@@ -134,10 +155,14 @@ public class MapViewer extends JPanel implements ActionListener {
         this.map.draw(g2d);
         //this.drawGrid(g2d);
 
+        this.numberedGrid(g2d);
+
+        drawNodeMap(g2d);
+
+        //drawOverlay(g2d, overlay);
+
         for (Visitor v : visitors)
             v.draw(g2d);
-
-        this.numberedGrid(g2d);
 
         g2d.setTransform(oldTransform);
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
@@ -176,47 +201,31 @@ public class MapViewer extends JPanel implements ActionListener {
     {
         int stepSize = 32;
 
+        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 10));
+
         g2d.setColor(Color.lightGray);
+        // Draw columns
+        for(int x = 0; x < this.map.getHeight(); x+=1)
+        {
+            g2d.drawLine(x * stepSize, 0,x * stepSize, this.map.getHeight() * stepSize);
+        }
 
-        int centerX = (int) (this.camera.getCenterPoint().getX());
-        int centerY = (int) (this.camera.getCenterPoint().getY());
-
-        centerX = 32*(centerX/32);
-        centerY = 32*(centerY/32);
-
+        g2d.setColor(Color.lightGray);
         // Draw rows
         for(int y = 0; y < this.map.getWidth(); y+=1)
         {
-            g2d.setColor(Color.lightGray);
             g2d.drawLine(0, y * stepSize, this.map.getWidth() * stepSize, y * stepSize);
-
-            // Draw columns
-            for(int x = 0; x < this.map.getHeight(); x+=1)
-            {
-                g2d.drawLine(x * stepSize, 0,x * stepSize, this.map.getHeight() * stepSize);
-
-                g2d.setColor(Color.white);
-                g2d.drawString("["+x+","+y+"]", x * stepSize, y * stepSize + g2d.getFontMetrics().getHeight());
-                g2d.setColor(Color.lightGray);
-            }
         }
 
-
-
-//        // Draw rows
-//        for(int y = 0; y < this.map.getWidth() + 1; y+=1)
+//        g2d.setColor(Color.yellow);
+//        for(int x = 0; x < this.map.getHeight(); x++)
 //        {
-//
-//
-//            g2d.drawLine(0, y * stepSize, this.map.getWidth() * stepSize, y * stepSize);
+//            for(int y = 0; y < this.map.getWidth(); y++)
+//            {
+//                g2d.drawString("["+x+","+y+"]", x * stepSize, y * stepSize + 10);
+//            }
 //        }
-//
-//        // Draw columns
-//        for(int x = 0; x < this.map.getHeight() + 1; x+=1)
-//        {
-//            g2d.drawLine(x * stepSize, 0,x * stepSize, this.map.getHeight() * stepSize);
-//        }
-
+//        g2d.setColor(Color.lightGray);
     }
 
     private void drawStats(Graphics2D g2d)
@@ -348,15 +357,93 @@ public class MapViewer extends JPanel implements ActionListener {
 
 
         for(Visitor v : visitors)
-           // v.update();
+           v.update();
 
         repaint();
     }
 
     private boolean canSpawn(Point2D newPosition) {
         for(Visitor v : visitors)
-            if(v.position.distance(newPosition) < 64)
+            if(v.position.distance(newPosition) < 32)
                 return false;
         return true;
+    }
+
+    private void drawNodeMap(Graphics2D g)
+    //private void drawNodeMap()
+    {
+        //System.out.println(overlay[0][0]);
+        TileLayer layer = (TileLayer) map.getLayers().get(6);
+
+
+        //X:1264,Y:2512 | Obstacle: false
+
+        int ovalSize = 7;
+        int stepSize = 32;
+
+        //nodes = new TileNode[layer.getHeight()][layer.getWidth()];
+
+        //g.setColor(Color.red);
+
+        for(int y = 0; y < layer.getHeight(); y++)
+        {
+            for(int x = 0; x < layer.getWidth(); x++)
+            {
+
+                int posX = x * stepSize + (stepSize / 2);
+                int posY = y * stepSize + (stepSize / 2);
+                //TileNode node = new TileNode(posX, posY);
+
+                if(layer.hasCollision(x, y))
+                {
+                    g.setColor(Color.red);
+                    g.fillOval(posX - (ovalSize / 2), posY - (ovalSize / 2), ovalSize, ovalSize);
+
+                    //node.setObstacle(false);
+
+                    g.setColor(Color.white);
+                    g.drawString("["+x+","+y+"]", x * 32, y * 32 +32);
+                }
+                else
+                {
+                    g.setColor(Color.blue);
+                    g.fillOval(posX - (ovalSize / 2), posY - (ovalSize / 2), ovalSize, ovalSize);
+
+                    //node.setObstacle(true);
+
+                    g.setColor(Color.white);
+                    g.drawString("["+x+","+y+"]", x * 32, y * 32 +32);
+                }
+
+                //nodes[y][x] = node;
+
+                //System.out.println(node.toString());
+            }
+        }
+    }
+
+    public void drawOverlay(Graphics2D g, int[][] overlay)
+    {
+        g.setColor(Color.white);
+        for(int x = 0; x < overlay.length; x++)
+        {
+            for(int y = 0; y < overlay.length; y++)
+            {
+                if(overlay[x][y] > -1) {
+                    if(overlay[x][y] == 0)
+                    {
+                        g.setColor(Color.RED);
+                        g.drawRect(x * 32, y * 32, 32, 32);
+                        g.setColor(Color.white);
+                        g.drawString(overlay[x][y] + "", x * 32 + (20 / 2), y * 32 + (40 / 2));
+                    }
+                    else
+                    {
+                        g.setColor(Color.white);
+                        g.drawString(overlay[x][y] + "", x * 32 + (20 / 2), y * 32 + (40 / 2));
+                    }
+                }
+            }
+        }
     }
 }
