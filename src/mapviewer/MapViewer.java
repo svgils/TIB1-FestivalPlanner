@@ -77,7 +77,7 @@ public class MapViewer extends JPanel implements ActionListener {
         Overlay test = new Overlay(map);
         overlay = test.generateOverlay(15, 12);
 
-        while (visitors.size() < 10) {
+        while (visitors.size() < 100) {
             int max = test.getData().length - 10;
 
             int x = rng.nextInt(max);
@@ -155,9 +155,9 @@ public class MapViewer extends JPanel implements ActionListener {
         this.map.draw(g2d);
         //this.drawGrid(g2d);
 
-        this.numberedGrid(g2d);
+        //this.numberedGrid(g2d);
 
-        drawNodeMap(g2d);
+        //drawNodeMap(g2d);
 
         //drawOverlay(g2d, overlay);
 
@@ -166,10 +166,6 @@ public class MapViewer extends JPanel implements ActionListener {
 
         g2d.setTransform(oldTransform);
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
-
-
-        //this.drawCrosshair(g2d);
-        //this.drawStats(g2d);
     }
 
     private void loadTargets()
@@ -354,7 +350,6 @@ public class MapViewer extends JPanel implements ActionListener {
         long time = System.nanoTime();
         double elapsedTime = (time-lastTime) / 1.0e9;
         lastTime = time;
-
 
         for(Visitor v : visitors)
            v.update();

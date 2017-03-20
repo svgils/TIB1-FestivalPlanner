@@ -70,7 +70,7 @@ public class Camera implements MouseListener, MouseMotionListener, MouseWheelLis
 
             this.lastMousePos = e.getPoint();
 
-            this.panel.repaint();
+            //this.panel.repaint();
         }
     }
 
@@ -80,7 +80,7 @@ public class Camera implements MouseListener, MouseMotionListener, MouseWheelLis
     {
         this.zoom *= (1.0F - e.getWheelRotation() / 25.0F);
 
-        this.panel.repaint();
+        //this.panel.repaint();
     }
 
     public double getZoom()
