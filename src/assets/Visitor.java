@@ -1,18 +1,13 @@
 package assets;
 
-import assets.mapviewer.Overlay;
+import assets.mapviewer.Target;
 import assets.simulation.Drawable;
 import assets.simulation.Texture;
 import assets.simulation.Updatable;
 
-import javax.imageio.ImageIO;
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -29,9 +24,13 @@ public class Visitor implements Updatable, Drawable {
     private Texture texture;
     public Point2D destination;
 
-    private Overlay overlay;
+    private Target target;
     private int currentDistance;
-    private Point2D localPosition;
+
+
+    private Visitor[] otherVisitors;
+
+    private boolean destinationReached;
 
     public Visitor(String name, String sex, Point2D position, Texture texture){
         this.name = name;
@@ -42,12 +41,13 @@ public class Visitor implements Updatable, Drawable {
         this.angle = 0;
         this.destination = new Point2D.Double(0, 0);
         this.texture = texture;
+        this.destinationReached = false;
     }
 
-    public Visitor(String name, String sex, Point2D position, Texture texture, Overlay overlay)
+    public Visitor(String name, String sex, Point2D position, Texture texture, Target target)
     {
         this(name, sex, position, texture);
-        this.overlay = overlay;
+        this.target = target;
     }
 
     public String getName() {
@@ -61,19 +61,27 @@ public class Visitor implements Updatable, Drawable {
     @Override
     public void update()
     {
-        if (overlay != null)
+        if (target != null)
         {
             int x = (int) Math.floor(position.getX() / 32);
             int y = (int) Math.floor(position.getY() / 32);
 
-            if (!(x < 0 || y < 0 || x >= overlay.getData().length || y >= overlay.getData().length)) {
+            if (!(x < 0 || y < 0 || x >= target.getData().length || y >= target.getData().length))
+            {
+                currentDistance = target.getData()[x][y];
 
-                //
-                currentDistance = overlay.getData()[x][y];
+                if(currentDistance == 0)
+                {
+                    destinationReached = true;
+                    // Force AI algorithm to look around
+                    currentDistance = -2;
+                }
 
                 // Initialise an array containing all possible direction.
                 int[][] offsets = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // [-1][0] = left, [1][0] = right, [0][-1] = down, [0][1] = up
-//vieze johan code
+
+
+                //BEGIN - vieze johan code
                 Random random = new Random(x + y + hashCode());
                 for(int i = 0; i < 10; i++) {
                     int a = random.nextInt(4);
@@ -85,21 +93,20 @@ public class Visitor implements Updatable, Drawable {
                     offsets[a][1] = offsets[b][1];
                     offsets[b][0] = cx;
                     offsets[b][1] = cy;
-
                 }
+                // EIND - vieze johan code
+
+
                 // Iterate all possible directions
                 for (int i = 0; i < offsets.length; i++) {
                     int desX = x + offsets[i][0];
                     int desY = y + offsets[i][1];
 
-                    if(currentDistance == 0)
-                        speed = 0;
-
-                    if (desX < 0 || desX >= overlay.getData().length || desY < 0 || desY >= overlay.getData().length)
+                    if (desX < 0 || desX >= target.getData().length || desY < 0 || desY >= target.getData().length)
                         continue;
-                    if (overlay.getData()[desX][desY] >= currentDistance)
+                    if (target.getData()[desX][desY] >= currentDistance)
                         continue;
-                    if (overlay.getData()[desX][desY] < 0)
+                    if (target.getData()[desX][desY] < 0)
                         continue;
 
                     destination = new Point2D.Double(desX * 32, desY * 32);
@@ -135,19 +142,20 @@ public class Visitor implements Updatable, Drawable {
 
         boolean collided = false;
 
-//        for(Visitor v : mapViewer.visitors)
-//        {
-//            if(v == this)
-//                continue;
-//            if(v.position.distance(newPosition) < 32) {
-//                collided = true;
-//                break;
+//        if(otherVisitors != null && otherVisitors.length > 0) {
+//            for (Visitor v : otherVisitors) {
+//                if (v == this)
+//                    continue;
+//                if (v.position.distance(newPosition) < 33) {
+//                    collided = true;
+//                    break;
+//                }
 //            }
 //        }
 
         int x = (int) Math.floor(newPosition.getX() / 32);
         int y = (int) Math.floor(newPosition.getY() / 32);
-        if(overlay.getData()[x][y] == -1)
+        if(target.getData()[x][y] == -1)
             collided = true;
 
 
@@ -167,20 +175,29 @@ public class Visitor implements Updatable, Drawable {
         tx.rotate(angle);
         tx.translate(-texture.getImage().getWidth()/2, -texture.getImage().getHeight()/2);
         g.drawImage(texture.getImage(), tx, null);
-        g.setColor(Color.red);
-        g.drawRect((int)position.getX() - 16, (int)position.getY() - 16, texture.getImage().getTileWidth(), texture.getImage().getTileHeight());
-        g.setColor(Color.green);
-        g.fillOval((int)position.getX() - (5 / 2), (int)position.getY() - (5 / 2), 5, 5);
-
-        g.setColor(Color.pink);
-        g.fillOval((int)destination.getX(), (int)destination.getY(), 5, 5);
+//        g.setColor(Color.red);
+//        g.drawRect((int)position.getX() - 16, (int)position.getY() - 16, texture.getImage().getTileWidth(), texture.getImage().getTileHeight());
+//        g.setColor(Color.green);
+//        g.fillOval((int)position.getX() - (5 / 2), (int)position.getY() - (5 / 2), 5, 5);
+//        g.setColor(Color.pink);
+//        g.fillOval((int)destination.getX() + 16, (int)destination.getY() + 16, 5, 5);
     }
 
-    public Overlay getOverlay() {
-        return overlay;
+    public Target getTarget() {
+        return target;
     }
 
-    public void setOverlay(Overlay overlay) {
-        this.overlay = overlay;
+    public void setTarget(Target overlay)
+    {
+        destinationReached = false;
+        this.target = overlay;
+    }
+
+    public boolean isDestinationReached() {
+        return destinationReached;
+    }
+
+    public void setOtherVisitors(Visitor[] otherVisitors) {
+        this.otherVisitors = otherVisitors;
     }
 }

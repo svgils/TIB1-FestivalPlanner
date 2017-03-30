@@ -5,17 +5,22 @@ import assets.tiled.TileMap;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Created by Michel on 17-3-2017.
  */
-public class Overlay {
+public class Target {
     private TileMap map;
     private int[][] data;
 
-    public Overlay(TileMap map) {
+    public Target(TileMap map) {
         this.map = map;
+    }
+
+    public Target(TileMap map, int endPointX, int endPointY)
+    {
+        this(map);
+        data = generateOverlay(endPointX, endPointY);
     }
 
     /**
@@ -27,6 +32,9 @@ public class Overlay {
      * @return
      */
     public int[][] generateOverlay(int endPointX, int endPointY) {
+        if(map != null || map.getLayers().size() < 1)
+            return null;
+
         // Get the required layer of the map
         TileLayer layer = (TileLayer) map.getLayers().get(6);
 

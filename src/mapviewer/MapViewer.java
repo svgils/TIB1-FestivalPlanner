@@ -2,7 +2,7 @@ package mapviewer;
 
 import assets.Visitor;
 import assets.mapviewer.Camera;
-import assets.mapviewer.Overlay;
+import assets.mapviewer.Target;
 import assets.simulation.TextureLoader;
 import assets.tiled.*;
 
@@ -11,12 +11,10 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * Created by Michel on 20-2-2017.
@@ -30,18 +28,21 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
+    private int visitorMax = 10000;
+    private int visitorCount = 0;
+
     public ArrayList<Visitor> visitors;
 
     JCheckBox[] layerCheckboxes;
 
-    List<TileObject> spawnTargets = null;
-    List<TileObject> exitTargets = null;
-    List<TileObject> toiletTargets = null;
-    List<TileObject> shopTargets = null;
-
     TextureLoader tl = new TextureLoader();
 
-    int[][]overlay = null;
+    ArrayList<Target> stageTargets = new ArrayList<>();
+    ArrayList<Point2D> spawnPoints = new ArrayList<>();
+    ArrayList<Target> exitTargets = new ArrayList<>();
+
+
+    Random rng;
 
     public static void main(String[] args) {
         try
@@ -68,51 +69,27 @@ public class MapViewer extends JPanel implements ActionListener {
 
         tl.LoadTexture("m_visitor_32x32", "/characters/m_visitor_32x32.png");
 
-        this.loadTargets();
-
         this.visitors = new ArrayList<>();
 
-        Random rng = new Random();
+        rng = new Random();
 
-        Overlay test = new Overlay(map);
-        overlay = test.generateOverlay(15, 12);
+        stageTargets.add(new Target(map, 15, 12));
+        stageTargets.add(new Target(map, 64, 11));
+        stageTargets.add(new Target(map, 41, 55));
 
-        while (visitors.size() < 100) {
-            int max = test.getData().length - 10;
+        spawnPoints.add(new Point(7, 79));
+        spawnPoints.add(new Point(8, 79));
+        spawnPoints.add(new Point(13, 79));
+        spawnPoints.add(new Point(14, 79));
+        spawnPoints.add(new Point(19, 79));
+        spawnPoints.add(new Point(20, 79));
 
-            int x = rng.nextInt(max);
-            int y = rng.nextInt(max);
-
-            while(!(test.getData()[x][y] > 10 && 10 < test.getData()[max][max]))
-            {
-                x = rng.nextInt(max);
-                y = rng.nextInt(max);
-            }
-
-            Point2D newPosition = new Point2D.Double(
-                    x * 32,
-                    y * 32
-            );
-            //if (canSpawn(newPosition))
-                visitors.add(new Visitor("Henk", "m", newPosition, tl.getTexture(0), test));
-        }
-
-//        addMouseMotionListener(new MouseMotionAdapter() {
-//            @Override
-//            public void mouseMoved(MouseEvent e) {
-//                AffineTransform cameraTransform = camera.getTransform(getWidth(), getHeight());
-//
-//                try {
-//                    Point2D worldMousePosition = cameraTransform.inverseTransform(e.getPoint(), null);
-//                    for (Visitor v : visitors)
-//                        v.destination = worldMousePosition;
-//
-//
-//                } catch (NoninvertibleTransformException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        });
+        exitTargets.add(new Target(map, 25, 79));
+        exitTargets.add(new Target(map, 26, 79));
+        exitTargets.add(new Target(map, 31, 79));
+        exitTargets.add(new Target(map, 32, 79));
+        exitTargets.add(new Target(map, 38, 79));
+        exitTargets.add(new Target(map, 39, 79));
 
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
@@ -164,33 +141,10 @@ public class MapViewer extends JPanel implements ActionListener {
         for (Visitor v : visitors)
             v.draw(g2d);
 
+        map.getLayers().get(3).draw(g2d);
+
         g2d.setTransform(oldTransform);
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
-    }
-
-    private void loadTargets()
-    {
-        ObjectLayer targetLayer = (ObjectLayer) this.map.getLayers().get(1);
-
-        spawnTargets = targetLayer.getTileObjects()
-                .stream()
-                .filter(to -> to.getName().equals("Entrance"))
-                .collect(Collectors.toList());
-
-        exitTargets = targetLayer.getTileObjects()
-                .stream()
-                .filter(to -> to.getName().equals("Exit"))
-                .collect(Collectors.toList());
-
-        toiletTargets = targetLayer.getTileObjects()
-                .stream()
-                .filter(to -> to.getName().equals("Shitbowl"))
-                .collect(Collectors.toList());
-
-        shopTargets = targetLayer.getTileObjects()
-                .stream()
-                .filter(to -> to.getName().equals("Shop"))
-                .collect(Collectors.toList());
     }
 
     private void numberedGrid(Graphics2D g2d)
@@ -351,15 +305,54 @@ public class MapViewer extends JPanel implements ActionListener {
         double elapsedTime = (time-lastTime) / 1.0e9;
         lastTime = time;
 
-        for(Visitor v : visitors)
-           v.update();
+        if(visitors.size() < visitorMax)
+        {
+            Point2D spawnPoint = spawnPoints.get(rng.nextInt(spawnPoints.size()));
+
+            if(canSpawn(spawnPoint))
+            {
+                spawnPoint = new Point2D.Double(spawnPoint.getX() * 32, spawnPoint.getY() * 32);
+                Target target = stageTargets.get(rng.nextInt(stageTargets.size()));
+
+                Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
+
+
+                Visitor v = (new Visitor("Henk", "m", spawnPoint, tl.getTexture(0), target));
+                v.setOtherVisitors(threadSafeVisitorArray);
+                visitors.add(v);
+            }
+        }
+
+        Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
+        for(Visitor v : threadSafeVisitorArray)
+        {
+            //v.setOtherVisitors(threadSafeVisitorArray);
+            v.update();
+
+            if(v.isDestinationReached())
+            {
+                if(exitTargets.contains(v.getTarget()))
+                {
+                    visitors.remove(v);
+                }
+
+                // Calculate a chance
+                int chance = ((int)(Math.random() * 100));
+
+                if(chance <= 2)
+                    v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
+                else
+                    v.setTarget(stageTargets.get(rng.nextInt(stageTargets.size())));
+            }
+        }
 
         repaint();
     }
 
     private boolean canSpawn(Point2D newPosition) {
-        for(Visitor v : visitors)
-            if(v.position.distance(newPosition) < 32)
+        Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
+        for(Visitor v : threadSafeVisitorArray)
+            if(v.position.distance(newPosition) < 64)
                 return false;
         return true;
     }
