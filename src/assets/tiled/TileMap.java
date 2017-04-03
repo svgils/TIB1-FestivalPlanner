@@ -105,6 +105,8 @@ public class TileMap implements Updatable, Drawable
             for (int i = 0; i < jsonLayers.size(); i++) {
                 Layer layer = null;
 
+
+
                 JsonObject jsonObject = jsonLayers.getJsonObject(i);
                 String type = jsonObject.getString("type");
                 switch(type)

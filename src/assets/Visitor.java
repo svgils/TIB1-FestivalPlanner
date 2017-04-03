@@ -61,7 +61,7 @@ public class Visitor implements Updatable, Drawable {
     @Override
     public void update()
     {
-        if (target != null)
+        if (target != null && target.getData() != null)
         {
             int x = (int) Math.floor(position.getX() / 32);
             int y = (int) Math.floor(position.getY() / 32);

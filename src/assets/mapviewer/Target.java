@@ -32,9 +32,6 @@ public class Target {
      * @return
      */
     public int[][] generateOverlay(int endPointX, int endPointY) {
-        if(map != null || map.getLayers().size() < 1)
-            return null;
-
         // Get the required layer of the map
         TileLayer layer = (TileLayer) map.getLayers().get(6);
 
@@ -70,6 +67,9 @@ public class Target {
                 int newX = currentPoint.x + offsets[i][0];
                 int newY = currentPoint.y + offsets[i][1];
 
+                System.out.println(newX);
+
+
                 if (newX < 0 || newX >= layer.getWidth() || newY < 0 || newY >= layer.getHeight())
                     continue;
                 if (data[newX][newY] >= 0)
@@ -79,6 +79,7 @@ public class Target {
 
                 data[newX][newY] = currentDistance + 1;
                 toVisit.add(new Point(newX, newY));
+
             }
         }
 

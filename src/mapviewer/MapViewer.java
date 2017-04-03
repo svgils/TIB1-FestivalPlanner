@@ -28,7 +28,7 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
-    private int visitorMax = 10000;
+    private int visitorMax = 200;
     private int visitorCount = 0;
 
     public ArrayList<Visitor> visitors;
@@ -68,6 +68,7 @@ public class MapViewer extends JPanel implements ActionListener {
         this.camera = new Camera(this);
 
         tl.LoadTexture("m_visitor_32x32", "/characters/m_visitor_32x32.png");
+        tl.LoadTexture("visitor_sprite", "/characters/visitor_sprite.png");
 
         this.visitors = new ArrayList<>();
 
@@ -134,7 +135,7 @@ public class MapViewer extends JPanel implements ActionListener {
 
         //this.numberedGrid(g2d);
 
-        //drawNodeMap(g2d);
+        drawNodeMap(g2d);
 
         //drawOverlay(g2d, overlay);
 
@@ -317,7 +318,7 @@ public class MapViewer extends JPanel implements ActionListener {
                 Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
 
 
-                Visitor v = (new Visitor("Henk", "m", spawnPoint, tl.getTexture(0), target));
+                Visitor v = (new Visitor("Henk", "m", spawnPoint, tl.getTexture(1), target));
                 v.setOtherVisitors(threadSafeVisitorArray);
                 visitors.add(v);
             }
@@ -341,6 +342,8 @@ public class MapViewer extends JPanel implements ActionListener {
 
                 if(chance <= 2)
                     v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
+                else if(chance <= 5)
+                    v.setTarget(stageTargets.get(rng.nextInt(stageTargets.size())));
                 else
                     v.setTarget(stageTargets.get(rng.nextInt(stageTargets.size())));
             }
