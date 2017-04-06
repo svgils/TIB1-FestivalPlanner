@@ -1,6 +1,7 @@
 package assets.simulation;
 
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 
 /**
  * Created by Michel on 10-3-2017.
@@ -22,5 +23,9 @@ public class Texture {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public void setImage(BufferedImage image){
+        this.image = image;
     }
 }

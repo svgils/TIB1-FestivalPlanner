@@ -8,6 +8,7 @@ import assets.simulation.Updatable;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
@@ -40,7 +41,7 @@ public class Visitor implements Updatable, Drawable {
         this.speed = 5;
         this.angle = 0;
         this.destination = new Point2D.Double(0, 0);
-        this.texture = texture;
+        this.texture = setColorRandom(texture);
         this.destinationReached = false;
     }
 
@@ -48,6 +49,7 @@ public class Visitor implements Updatable, Drawable {
     {
         this(name, sex, position, texture);
         this.target = target;
+        this.texture = setColorRandom(texture);
     }
 
     public String getName() {
@@ -200,4 +202,26 @@ public class Visitor implements Updatable, Drawable {
     public void setOtherVisitors(Visitor[] otherVisitors) {
         this.otherVisitors = otherVisitors;
     }
-}
+
+    public Texture setColorRandom(Texture texture){
+
+        BufferedImage image = texture.getImage();
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int newColor = Color.getHSBColor((float)(Math.random() * 500.0f), 1, 1).getRGB();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Color originalColor = new Color(image.getRGB(x, y));
+                if (originalColor.equals(Color.green)) {
+                    image.setRGB(x, y,newColor);
+                }
+            }
+        }
+        texture.setImage(image);
+        return texture;
+
+    }
+
+
+
+    }

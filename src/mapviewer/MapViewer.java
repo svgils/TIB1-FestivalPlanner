@@ -28,19 +28,28 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
-    private int visitorMax = 200;
+    private int visitorMax = 2000;
     private int visitorCount = 0;
 
     public ArrayList<Visitor> visitors;
 
     JCheckBox[] layerCheckboxes;
+    JCheckBox[] layerstageCheckboxes;
 
     TextureLoader tl = new TextureLoader();
 
     ArrayList<Target> stageTargets = new ArrayList<>();
+    ArrayList<Target> stage1Targets = new ArrayList<>();
+    ArrayList<Target> stage2Targets = new ArrayList<>();
+    ArrayList<Target> stage3Targets = new ArrayList<>();
     ArrayList<Point2D> spawnPoints = new ArrayList<>();
     ArrayList<Target> exitTargets = new ArrayList<>();
+    ArrayList<Target> shopTargets = new ArrayList<>();
+    ArrayList<Target> toiletTargest = new ArrayList<>();
 
+    boolean stage1 = true;
+    boolean stage2 = true;
+    boolean stage3 = true;
 
     Random rng;
 
@@ -52,7 +61,10 @@ public class MapViewer extends JPanel implements ActionListener {
             frame.setPreferredSize(new Dimension(800, 600));
             frame.setMinimumSize(new Dimension(800, 600));
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH | JFrame.NORMAL);
-            frame.setContentPane(new MapViewer());
+            JPanel content = new JPanel(new BorderLayout());
+            MapViewer mapviewer = new MapViewer();
+            content.add(mapviewer, BorderLayout.CENTER);
+
             frame.pack();
             frame.setVisible(true);
         }
@@ -74,9 +86,16 @@ public class MapViewer extends JPanel implements ActionListener {
 
         rng = new Random();
 
-        stageTargets.add(new Target(map, 15, 12));
-        stageTargets.add(new Target(map, 64, 11));
-        stageTargets.add(new Target(map, 41, 55));
+        stageTargets.add(new Target(map, 18, 69));
+        stage1Targets.add(new Target(map, 32, 61));
+        stage1Targets.add(new Target(map, 49, 59));
+        stage1Targets.add(new Target(map, 33, 54));
+        stage2Targets.add(new Target(map, 8, 13));
+        stage2Targets.add(new Target(map, 22, 16));
+        stage2Targets.add(new Target(map, 12, 23));
+        stage3Targets.add(new Target(map, 55, 14));
+        stage3Targets.add(new Target(map, 72, 18));
+        stage3Targets.add(new Target(map, 62, 22));
 
         spawnPoints.add(new Point(7, 79));
         spawnPoints.add(new Point(8, 79));
@@ -91,6 +110,21 @@ public class MapViewer extends JPanel implements ActionListener {
         exitTargets.add(new Target(map, 32, 79));
         exitTargets.add(new Target(map, 38, 79));
         exitTargets.add(new Target(map, 39, 79));
+
+        shopTargets.add(new Target(map,55,38));
+        shopTargets.add(new Target(map,64,39));
+        shopTargets.add(new Target(map,56,47));
+        shopTargets.add(new Target(map,5,41));
+        shopTargets.add(new Target(map,11,37));
+        shopTargets.add(new Target(map,8,45));
+
+        toiletTargest.add(new Target(map,10,52));
+        toiletTargest.add(new Target(map,5,61));
+        toiletTargest.add(new Target(map,12,63));
+        toiletTargest.add(new Target(map,58,77));
+        toiletTargest.add(new Target(map,61,74));
+        toiletTargest.add(new Target(map,68,75));
+
 
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
@@ -115,6 +149,49 @@ public class MapViewer extends JPanel implements ActionListener {
             });
         }
 
+        this.layerstageCheckboxes = new JCheckBox[3];
+        add(this.layerstageCheckboxes[0] = new JCheckBox("stage1",true));
+        add(this.layerstageCheckboxes[1] = new JCheckBox("stage2",true));
+        add(this.layerstageCheckboxes[2] = new JCheckBox("stage3",true));
+
+        layerstageCheckboxes[0].addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(layerstageCheckboxes[0].isSelected()){
+                    stage1 = true;
+                }
+                else{
+                    stage1 = false;
+                }
+
+            }
+        });
+
+        layerstageCheckboxes[1].addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(layerstageCheckboxes[1].isSelected()){
+                    stage2 = true;
+                }
+                else{
+                    stage2 = false;
+                }
+            }
+        });
+        layerstageCheckboxes[2].addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(layerstageCheckboxes[2].isSelected()){
+                    stage3 = true;
+                }
+                else{
+                    stage3 = false;
+                }
+            }
+        });
+
+
+
         new Timer(1000 / 60, this).start();
     }
 
@@ -135,12 +212,15 @@ public class MapViewer extends JPanel implements ActionListener {
 
         //this.numberedGrid(g2d);
 
-        drawNodeMap(g2d);
+        //rawNodeMap(g2d);
 
         //drawOverlay(g2d, overlay);
 
-        for (Visitor v : visitors)
+        for (Visitor v : visitors) {
             v.draw(g2d);
+            //v.setColorRandom();
+        }
+
 
         map.getLayers().get(3).draw(g2d);
 
@@ -324,6 +404,7 @@ public class MapViewer extends JPanel implements ActionListener {
             }
         }
 
+
         Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
         for(Visitor v : threadSafeVisitorArray)
         {
@@ -342,10 +423,26 @@ public class MapViewer extends JPanel implements ActionListener {
 
                 if(chance <= 2)
                     v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
-                else if(chance <= 5)
-                    v.setTarget(stageTargets.get(rng.nextInt(stageTargets.size())));
+                else if(chance <= 8)
+                    v.setTarget(toiletTargest.get(rng.nextInt(toiletTargest.size())));
+                else if(chance <= 15)
+                    v.setTarget(shopTargets.get(rng.nextInt(shopTargets.size())));
+                else if(chance <= 40 && stage1)
+                    v.setTarget(stage1Targets.get(rng.nextInt(stage1Targets.size())));
+                else if(chance <= 65 && stage2)
+                    v.setTarget(stage2Targets.get(rng.nextInt(stage2Targets.size())));
+                else if(chance <= 80 && stage3)
+                    v.setTarget(stage3Targets.get(rng.nextInt(stage3Targets.size())));
                 else
-                    v.setTarget(stageTargets.get(rng.nextInt(stageTargets.size())));
+                {
+                    if(stage1)
+                        v.setTarget(stage1Targets.get(rng.nextInt(stage1Targets.size())));
+                    if(stage2)
+                        v.setTarget(stage2Targets.get(rng.nextInt(stage2Targets.size())));
+                    if(stage3)
+                        v.setTarget(stage3Targets.get(rng.nextInt(stage3Targets.size())));
+
+                }
             }
         }
 
