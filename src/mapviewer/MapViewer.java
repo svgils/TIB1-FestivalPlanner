@@ -397,11 +397,6 @@ public class MapViewer extends JPanel implements ActionListener {
         lastTime = time;
 
         Main.currentTime = Main.currentTime.plusSeconds(5L);
-        try {
-            Main.mp.schedulePainter.repaint();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
 
         if (!Main.currentTime.isBefore(LocalDateTime.MIN.plusDays(1L))) {
             visitorMax = 0;
