@@ -20,7 +20,7 @@ public class Performance {
     }
 
     public LocalTime getBegin(){
-        return begin;
+        return this.begin;
     }
 
     public Artist getAtrist(){
@@ -28,7 +28,7 @@ public class Performance {
     }
 
     public Stage getStage(){
-        return stage;
+        return this.stage;
     }
 
     public LocalTime getEnd(){
@@ -42,6 +42,6 @@ public class Performance {
                 return end;
             }
             */
-        return end;
+        return this.end;
     }
 }

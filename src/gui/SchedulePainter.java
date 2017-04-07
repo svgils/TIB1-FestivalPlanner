@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -27,8 +28,11 @@ public class SchedulePainter extends JPanel {
     int infoBoxY;
     String performanceInfo;
     boolean drawInfoBox = false;
+    double scrollbarPos;
 
     JScrollBar scrollHorz;
+
+    int timePos = hSpacingFirst;
     //JScrollBar scrollVert;
 
     public SchedulePainter(){
@@ -42,7 +46,8 @@ public class SchedulePainter extends JPanel {
 
         //Scrollbar stuff
         scrollHorz.addAdjustmentListener(e -> {
-            createVertLines(49, ((double)e.getValue()/90));
+            scrollbarPos = (double)e.getValue()/90;
+            createVertLines(49, scrollbarPos);
             repaint();
         });
 
@@ -92,6 +97,13 @@ public class SchedulePainter extends JPanel {
             if (g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() > hSpacingFirst - 30)
                 hSpacingFirst = (int) g.getFontMetrics().getStringBounds(s.getName(), null).getWidth() + 30;
         }
+
+//        timePos = hSpacingFirst + Main.currentTime.getSecond() /AgendaForm.H_SPACING;
+//        AffineTransform tx = ((Graphics2D) g).getTransform();
+//        g.translate((int)((getWidth()-hSpacingFirst)*scrollbarPos),0);
+//        g2d.drawLine(timePos,0,timePos,height);
+//        ((Graphics2D) g).setTransform(tx);
+
 
         //drawing horizontal lines
         for (int i = 1; i < Main.festival.getStages().size() + 1; i++) {

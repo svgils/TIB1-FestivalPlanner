@@ -42,7 +42,9 @@ public class AgendaForm extends JFrame {
         super("Agenda");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        tabbedPane.addTab("Agenda", new SchedulePainter());
+        schedulePainter = new SchedulePainter();
+
+        tabbedPane.addTab("Agenda", schedulePainter);
         tabbedPane.addTab("Simulation", new MapViewer());
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();

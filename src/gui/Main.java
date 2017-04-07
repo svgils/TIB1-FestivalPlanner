@@ -42,12 +42,23 @@ public class Main {
         festival.addStage(new Stage("Stage2", "", festival.getStages().size()));
         festival.addStage(new Stage("Stage3", "", festival.getStages().size()));
 
-        festival.addPerformance(new Performance(new Artist("example1", "gen1", 2), festival.getStage(0), LocalTime.parse("05:31"), LocalTime.parse("07:15")));
-        festival.addPerformance(new Performance(new Artist("example2", "gen1", 4), festival.getStage(1 ), LocalTime.parse("09:17"), LocalTime.parse("12:47")));
-        festival.addPerformance(new Performance(new Artist("example3", "gen2", 10000), festival.getStage(2), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
-        festival.addPerformance(new Performance(new Artist("example4", "gen3", 1000), festival.getStage(0), LocalTime.parse("00:11"), LocalTime.parse("02:34")));
-        festival.addPerformance(new Performance(new Artist("example5", "gen3", 1000), festival.getStage(2), LocalTime.parse("03:23"), LocalTime.parse("05:16")));
+//        festival.addPerformance(new Performance(new Artist("example1", "gen1", 2), festival.getStage(0), LocalTime.parse("05:31"), LocalTime.parse("07:15")));
+//        festival.addPerformance(new Performance(new Artist("example2", "gen1", 4), festival.getStage(1 ), LocalTime.parse("09:17"), LocalTime.parse("12:47")));
+//        festival.addPerformance(new Performance(new Artist("example3", "gen2", 10000), festival.getStage(2), LocalTime.parse("22:15"), LocalTime.parse("23:55")));
+//        festival.addPerformance(new Performance(new Artist("example4", "gen3", 1000), festival.getStage(0), LocalTime.parse("00:11"), LocalTime.parse("02:34")));
+//        festival.addPerformance(new Performance(new Artist("example5", "gen3", 1000), festival.getStage(2), LocalTime.parse("03:23"), LocalTime.parse("05:16")));
+//        festival.addPerformance(new Performance(new Artist("example6", "gen3", 1000), festival.getStage(1), LocalTime.parse("13:06"), LocalTime.parse("15:00")));
+//        festival.addPerformance(new Performance(new Artist("example7", "gen3", 1000), festival.getStage(0), LocalTime.parse("17:12"), LocalTime.parse("21:27")));
+        festival.addPerformance(new Performance(new Artist("example1", "gen1", 2), festival.getStage(0), LocalTime.parse("05:31"), LocalTime.parse("08:15")));
+        festival.addPerformance(new Performance(new Artist("example2", "gen1", 4), festival.getStage(1 ), LocalTime.parse("07:40"), LocalTime.parse("11:47")));
+        festival.addPerformance(new Performance(new Artist("example3", "gen2", 10000), festival.getStage(2), LocalTime.parse("18:02"), LocalTime.parse("23:00")));
+        festival.addPerformance(new Performance(new Artist("example4", "gen3", 1000), festival.getStage(0), LocalTime.parse("00:01"), LocalTime.parse("03:34")));
+        festival.addPerformance(new Performance(new Artist("example5", "gen3", 1000), festival.getStage(2), LocalTime.parse("04:50"), LocalTime.parse("06:16")));
         festival.addPerformance(new Performance(new Artist("example6", "gen3", 1000), festival.getStage(1), LocalTime.parse("13:06"), LocalTime.parse("15:00")));
-        festival.addPerformance(new Performance(new Artist("example7", "gen3", 1000), festival.getStage(0), LocalTime.parse("17:12"), LocalTime.parse("21:27")));
+        festival.addPerformance(new Performance(new Artist("example7", "gen3", 1000), festival.getStage(0), LocalTime.parse("14:45"), LocalTime.parse("18:27")));
+        festival.addPerformance(new Performance(new Artist("example6", "gen3", 1000), festival.getStage(1), LocalTime.parse("01:06"), LocalTime.parse("05:10")));
+        festival.addPerformance(new Performance(new Artist("example5", "gen3", 1000), festival.getStage(2), LocalTime.parse("10:23"), LocalTime.parse("13:16")));
+        festival.addPerformance(new Performance(new Artist("example7", "gen3", 1000), festival.getStage(0), LocalTime.parse("22:00"), LocalTime.parse("23:59")));
+        festival.addPerformance(new Performance(new Artist("example6", "gen3", 1000), festival.getStage(1), LocalTime.parse("22:30"), LocalTime.parse("23:59")));
     }
 }

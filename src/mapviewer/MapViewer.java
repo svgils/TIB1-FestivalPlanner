@@ -6,7 +6,9 @@ import assets.mapviewer.Camera;
 import assets.mapviewer.Target;
 import assets.simulation.TextureLoader;
 import assets.tiled.*;
+import gui.AgendaForm;
 import gui.Main;
+import gui.SchedulePainter;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -31,7 +33,7 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
-    private int visitorMax = 200;
+    private int visitorMax = 1000;
 
     public ArrayList<Visitor> visitors;
 
@@ -52,6 +54,10 @@ public class MapViewer extends JPanel implements ActionListener {
     boolean stage1 = true;
     boolean stage2 = true;
     boolean stage3 = true;
+
+    boolean stage1don = false;
+    boolean stage2don = false;
+    boolean stage3don = false;
 
     boolean open= true;
 
@@ -129,7 +135,6 @@ public class MapViewer extends JPanel implements ActionListener {
         toiletTargest.add(new Target(map,61,74));
         toiletTargest.add(new Target(map,68,75));
 
-
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
         for (int i = 0; i < this.map.getLayers().size(); i++) {
@@ -161,40 +166,23 @@ public class MapViewer extends JPanel implements ActionListener {
         layerstageCheckboxes[0].addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(layerstageCheckboxes[0].isSelected()){
-                    stage1 = true;
-                }
-                else{
-                    stage1 = false;
-                }
-
+                stage1 = layerstageCheckboxes[0].isSelected();
             }
         });
 
         layerstageCheckboxes[1].addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(layerstageCheckboxes[1].isSelected()){
-                    stage2 = true;
-                }
-                else{
-                    stage2 = false;
-                }
+                stage2 = layerstageCheckboxes[1].isSelected();
             }
         });
+
         layerstageCheckboxes[2].addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(layerstageCheckboxes[2].isSelected()){
-                    stage3 = true;
-                }
-                else{
-                    stage3 = false;
-                }
+                stage3 = layerstageCheckboxes[2].isSelected();
             }
         });
-
-
 
         new Timer(1000 / 60, this).start();
     }
@@ -202,9 +190,6 @@ public class MapViewer extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
-        ((Graphics2D) g).translate(5,15);
-        drawTime(g2d);
 
         AffineTransform oldTransform = g2d.getTransform();
 
@@ -227,12 +212,14 @@ public class MapViewer extends JPanel implements ActionListener {
             v.draw(g2d);
             //v.setColorRandom();
         }
-
-
         map.getLayers().get(3).draw(g2d);
 
         g2d.setTransform(oldTransform);
         // YOU CAN EDIT BEYOND THIS POINT AGAIN!
+
+        g.setFont(new Font("Arial", 1, 20));
+        g.translate(10,20);
+        drawTime(g2d);
     }
 
     private void numberedGrid(Graphics2D g2d)
@@ -305,6 +292,18 @@ public class MapViewer extends JPanel implements ActionListener {
 
     private void drawTime(Graphics2D g2d){
         g2d.drawString(Main.currentTime.toLocalTime().toString(), 0, 0);
+        g2d.drawString("stage 1 is "+ getStatus(stage1), 0, 20);
+        g2d.drawString("stage 2 is "+ getStatus(stage2), 0, 40);
+        g2d.drawString("stage 3 is "+ getStatus(stage3), 0, 60);
+    }
+
+    private String getStatus(boolean stage){
+        if (stage){
+            return "open";
+        }
+        else
+            return "dicht";
+
     }
 
     private void drawCrosshair(Graphics2D g2d)
@@ -397,7 +396,12 @@ public class MapViewer extends JPanel implements ActionListener {
         double elapsedTime = (time - lastTime) / 1.0e9;
         lastTime = time;
 
-        Main.currentTime = Main.currentTime.plusSeconds(1L);
+        Main.currentTime = Main.currentTime.plusSeconds(5L);
+        try {
+            Main.mp.schedulePainter.repaint();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 
         if (!Main.currentTime.isBefore(LocalDateTime.MIN.plusDays(1L))) {
             visitorMax = 0;
@@ -405,29 +409,36 @@ public class MapViewer extends JPanel implements ActionListener {
         }
 
         for(Performance p : Main.festival.getPerformances()){
-            if(Main.currentTime.toLocalTime().isAfter(p.getBegin()) && Main.currentTime.toLocalTime().isAfter(p.getEnd())){
+            if(Main.currentTime.toLocalTime().isAfter(p.getBegin()) && Main.currentTime.toLocalTime().isBefore(p.getEnd())){
                 if(p.getStage().getIndex() == 0){
                     stage1 = true;
+                    stage1don = true;
                 }
-                if(p.getStage().getIndex() == 1){
+                else if(p.getStage().getIndex() == 1){
                     stage2 = true;
+                    stage2don = true;
                 }
-                if(p.getStage().getIndex() == 2){
+                else if(p.getStage().getIndex() == 2){
                     stage3 = true;
+                    stage3don = true;
                 }
             }
             else {
-                if (p.getStage().getIndex() == 0) {
+                if (p.getStage().getIndex() == 0 && stage1don == false) {
                     stage1 = false;
                 }
-                if (p.getStage().getIndex() == 1) {
+                else if (p.getStage().getIndex() == 1 && stage2don == false) {
                     stage2 = false;
                 }
-                if (p.getStage().getIndex() == 2) {
+                else if (p.getStage().getIndex() == 2 && stage3don == false) {
                     stage3 = false;
                 }
             }
         }
+
+        stage1don = false;
+        stage2don = false;
+        stage3don = false;
 
         if(visitors.size() < visitorMax)
         {
@@ -465,19 +476,19 @@ public class MapViewer extends JPanel implements ActionListener {
                 if(chance <= 2 &&  open) {
                     v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
                 }
-                else if(chance <= 8 && open) {
+                else if(chance <= 8 &&open) {
                     v.setTarget(toiletTargest.get(rng.nextInt(toiletTargest.size())));
                 }
                 else if(chance <= 15 && open) {
                     v.setTarget(shopTargets.get(rng.nextInt(shopTargets.size())));
                 }
-                else if(chance <= 40 && stage1 && open) {
+                else if(chance <= 40 && stage1 &&open) {
                     v.setTarget(stage1Targets.get(rng.nextInt(stage1Targets.size())));
                 }
                 else if(chance <= 65 && stage2 && open) {
                     v.setTarget(stage2Targets.get(rng.nextInt(stage2Targets.size())));
                 }
-                else if(chance <= 80 && stage3 && open) {
+                else if(chance <= 80&& stage3 && open) {
                     v.setTarget(stage3Targets.get(rng.nextInt(stage3Targets.size())));
                 }
                 else
