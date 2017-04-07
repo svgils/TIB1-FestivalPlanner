@@ -1,10 +1,12 @@
 package mapviewer;
 
+import assets.Performance;
 import assets.Visitor;
 import assets.mapviewer.Camera;
 import assets.mapviewer.Target;
 import assets.simulation.TextureLoader;
 import assets.tiled.*;
+import gui.Main;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -13,6 +15,7 @@ import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -28,8 +31,7 @@ public class MapViewer extends JPanel implements ActionListener {
     private int linesV;
     private int linesH;
 
-    private int visitorMax = 2000;
-    private int visitorCount = 0;
+    private int visitorMax = 200;
 
     public ArrayList<Visitor> visitors;
 
@@ -38,18 +40,20 @@ public class MapViewer extends JPanel implements ActionListener {
 
     TextureLoader tl = new TextureLoader();
 
-    ArrayList<Target> stageTargets = new ArrayList<>();
-    ArrayList<Target> stage1Targets = new ArrayList<>();
-    ArrayList<Target> stage2Targets = new ArrayList<>();
-    ArrayList<Target> stage3Targets = new ArrayList<>();
-    ArrayList<Point2D> spawnPoints = new ArrayList<>();
-    ArrayList<Target> exitTargets = new ArrayList<>();
-    ArrayList<Target> shopTargets = new ArrayList<>();
-    ArrayList<Target> toiletTargest = new ArrayList<>();
+    private ArrayList<Target> stageTargets = new ArrayList<>();
+    private ArrayList<Target> stage1Targets = new ArrayList<>();
+    private ArrayList<Target> stage2Targets = new ArrayList<>();
+    private ArrayList<Target> stage3Targets = new ArrayList<>();
+    private ArrayList<Point2D> spawnPoints = new ArrayList<>();
+    private ArrayList<Target> exitTargets = new ArrayList<>();
+    private ArrayList<Target> shopTargets = new ArrayList<>();
+    private ArrayList<Target> toiletTargest = new ArrayList<>();
 
     boolean stage1 = true;
     boolean stage2 = true;
     boolean stage3 = true;
+
+    boolean open= true;
 
     Random rng;
 
@@ -104,12 +108,12 @@ public class MapViewer extends JPanel implements ActionListener {
         spawnPoints.add(new Point(19, 79));
         spawnPoints.add(new Point(20, 79));
 
-        exitTargets.add(new Target(map, 25, 79));
-        exitTargets.add(new Target(map, 26, 79));
-        exitTargets.add(new Target(map, 31, 79));
-        exitTargets.add(new Target(map, 32, 79));
-        exitTargets.add(new Target(map, 38, 79));
-        exitTargets.add(new Target(map, 39, 79));
+        exitTargets.add(new Target(map, 25, 78));
+        exitTargets.add(new Target(map, 26, 78));
+        exitTargets.add(new Target(map, 31, 78));
+        exitTargets.add(new Target(map, 32, 78));
+        exitTargets.add(new Target(map, 38, 78));
+        exitTargets.add(new Target(map, 39, 78));
 
         shopTargets.add(new Target(map,55,38));
         shopTargets.add(new Target(map,64,39));
@@ -121,7 +125,7 @@ public class MapViewer extends JPanel implements ActionListener {
         toiletTargest.add(new Target(map,10,52));
         toiletTargest.add(new Target(map,5,61));
         toiletTargest.add(new Target(map,12,63));
-        toiletTargest.add(new Target(map,58,77));
+        toiletTargest.add(new Target(map,48,77));
         toiletTargest.add(new Target(map,61,74));
         toiletTargest.add(new Target(map,68,75));
 
@@ -129,7 +133,7 @@ public class MapViewer extends JPanel implements ActionListener {
         this.layerCheckboxes = new JCheckBox[this.map.getLayers().size()];
         // Add Checkboxes
         for (int i = 0; i < this.map.getLayers().size(); i++) {
-            boolean isSelected = this.map.getLayers().get(i).getOpacity() > 0 ? true : false;
+            boolean isSelected = this.map.getLayers().get(i).getOpacity() > 0;
             add(this.layerCheckboxes[i] = new JCheckBox(this.map.getLayers().get(i).getName(), isSelected));
             int finalI = i;
             this.layerCheckboxes[i].addItemListener(new ItemListener() {
@@ -198,6 +202,9 @@ public class MapViewer extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        ((Graphics2D) g).translate(5,15);
+        drawTime(g2d);
 
         AffineTransform oldTransform = g2d.getTransform();
 
@@ -296,6 +303,10 @@ public class MapViewer extends JPanel implements ActionListener {
         g2d.translate(0, -(statCount * statHeight));
     }
 
+    private void drawTime(Graphics2D g2d){
+        g2d.drawString(Main.currentTime.toLocalTime().toString(), 0, 0);
+    }
+
     private void drawCrosshair(Graphics2D g2d)
     {
         AffineTransform oldTransform = g2d.getTransform();
@@ -383,8 +394,40 @@ public class MapViewer extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         long time = System.nanoTime();
-        double elapsedTime = (time-lastTime) / 1.0e9;
+        double elapsedTime = (time - lastTime) / 1.0e9;
         lastTime = time;
+
+        Main.currentTime = Main.currentTime.plusSeconds(1L);
+
+        if (!Main.currentTime.isBefore(LocalDateTime.MIN.plusDays(1L))) {
+            visitorMax = 0;
+            open = false;
+        }
+
+        for(Performance p : Main.festival.getPerformances()){
+            if(Main.currentTime.toLocalTime().isAfter(p.getBegin()) && Main.currentTime.toLocalTime().isAfter(p.getEnd())){
+                if(p.getStage().getIndex() == 0){
+                    stage1 = true;
+                }
+                if(p.getStage().getIndex() == 1){
+                    stage2 = true;
+                }
+                if(p.getStage().getIndex() == 2){
+                    stage3 = true;
+                }
+            }
+            else {
+                if (p.getStage().getIndex() == 0) {
+                    stage1 = false;
+                }
+                if (p.getStage().getIndex() == 1) {
+                    stage2 = false;
+                }
+                if (p.getStage().getIndex() == 2) {
+                    stage3 = false;
+                }
+            }
+        }
 
         if(visitors.size() < visitorMax)
         {
@@ -403,8 +446,6 @@ public class MapViewer extends JPanel implements ActionListener {
                 visitors.add(v);
             }
         }
-
-
         Visitor[] threadSafeVisitorArray = visitors.toArray(new Visitor[visitors.size()]);
         for(Visitor v : threadSafeVisitorArray)
         {
@@ -421,32 +462,48 @@ public class MapViewer extends JPanel implements ActionListener {
                 // Calculate a chance
                 int chance = ((int)(Math.random() * 100));
 
-                if(chance <= 2)
+                if(chance <= 2 &&  open) {
                     v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
-                else if(chance <= 8)
+                }
+                else if(chance <= 8 && open) {
                     v.setTarget(toiletTargest.get(rng.nextInt(toiletTargest.size())));
-                else if(chance <= 15)
+                }
+                else if(chance <= 15 && open) {
                     v.setTarget(shopTargets.get(rng.nextInt(shopTargets.size())));
-                else if(chance <= 40 && stage1)
+                }
+                else if(chance <= 40 && stage1 && open) {
                     v.setTarget(stage1Targets.get(rng.nextInt(stage1Targets.size())));
-                else if(chance <= 65 && stage2)
+                }
+                else if(chance <= 65 && stage2 && open) {
                     v.setTarget(stage2Targets.get(rng.nextInt(stage2Targets.size())));
-                else if(chance <= 80 && stage3)
+                }
+                else if(chance <= 80 && stage3 && open) {
                     v.setTarget(stage3Targets.get(rng.nextInt(stage3Targets.size())));
+                }
                 else
                 {
-                    if(stage1)
+                    if(stage1&& open) {
                         v.setTarget(stage1Targets.get(rng.nextInt(stage1Targets.size())));
-                    if(stage2)
+                    }
+                    else if(stage2&& open) {
                         v.setTarget(stage2Targets.get(rng.nextInt(stage2Targets.size())));
-                    if(stage3)
+                    }
+                    else if(stage3&& open) {
                         v.setTarget(stage3Targets.get(rng.nextInt(stage3Targets.size())));
+                    }
+                    else {
+                        v.setTarget(exitTargets.get(rng.nextInt(exitTargets.size())));
 
+                    }
                 }
             }
         }
 
         repaint();
+    }
+
+    private synchronized void removeVisitor(Visitor v){
+        visitors.remove(v);
     }
 
     private boolean canSpawn(Point2D newPosition) {

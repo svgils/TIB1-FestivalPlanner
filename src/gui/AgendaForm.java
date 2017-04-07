@@ -46,7 +46,7 @@ public class AgendaForm extends JFrame {
         tabbedPane.addTab("Simulation", new MapViewer());
 
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainPanel.setPreferredSize(new Dimension(screensize.width, 85 + tabbedPane.getBoundsAt(1).height + V_SPACING * Main.festival.getStages().size() + V_SPACING));
+        mainPanel.setPreferredSize(new Dimension(screensize.width, 45 + tabbedPane.getBoundsAt(1).height + V_SPACING * Main.festival.getStages().size() + V_SPACING));
 
         tabbedPane.addChangeListener(new ChangeListener() {
             @Override
@@ -120,14 +120,6 @@ public class AgendaForm extends JFrame {
             }
         });
 
-        addStage = new JMenuItem("Add Stage");
-        addStage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new StageForm();
-            }
-        });
-
         addPerformance = new JMenuItem("Add Performance");
         addPerformance.addActionListener(new ActionListener() {
             @Override
@@ -140,7 +132,6 @@ public class AgendaForm extends JFrame {
         menuFile.add(loadItem);
         menuFile.add(newFestival);
 
-        menuEdit.add(addStage);
         menuEdit.add(addPerformance);
 
         menuBar.add(menuFile);
